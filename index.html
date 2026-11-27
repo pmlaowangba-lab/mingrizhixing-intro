@@ -1241,17 +1241,16 @@
     [data-reveal].is-in { opacity: 1; transform: translateY(0); }
 
     @media (max-width: 980px) {
-      .nav-menu, .wb-sidebar { display: none; }
-      .wb-shell { grid-template-columns: 1fr; }
-      .feature-row, .pricing-grid, .stats-grid, .footer-grid, .vp-real-grid, .hm-top-grid, .mt-grid-2x2, .hm-recent, .rws-grid, .ws-grid { grid-template-columns: 1fr; }
-      .hm-channels-4, .ts-deliver-4, .rws-metrics, .ws-log { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      .vp-acct-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .nav-menu { display: none; }
+      .feature-row, .pricing-grid, .stats-grid, .footer-grid { grid-template-columns: 1fr; }
       .feature-row.is-reverse .feature-copy, .feature-row.is-reverse .feature-visual { order: initial; }
       .reviews-masonry { columns: 1; }
       .platforms-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .founder-card { padding: 28px 22px; }
-      .vp-meta-4 { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
-      .ts-hook-grid, .ts-steps-3 { grid-template-columns: 1fr !important; }
+
+      /* 主舞台：移动端保持横向桌面画面，按屏宽等比缩放（不再纵向拉长） */
+      .wb-scale { position: relative; overflow: hidden; border-radius: 14px; box-shadow: 0 18px 40px -18px rgba(15, 23, 42, 0.22); }
+      .wb-scale > .wb-shell { width: 1040px; max-width: none; transform-origin: 0 0; box-shadow: none; }
     }
 
     @media (max-width: 640px) {
@@ -1302,62 +1301,6 @@
       }
       .showcase-tabs::-webkit-scrollbar { display: none; }
       .sc-tab { flex: none; white-space: nowrap; height: 34px; padding: 0 13px; font-size: 12.5px; }
-
-      /* 4. 主舞台外壳与各场景精简适配 */
-      .wb-shell { border-radius: 16px; }
-      .wb-topbar { height: 40px; padding: 0 12px; gap: 8px; }
-      .wb-crumb { font-size: 11px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
-      .wb-vip-pill { display: none; }
-      .wb-stage { padding: 12px 12px 54px; min-height: 0; }
-      .wb-scene.is-active { min-height: 0; }
-      .sim-cursor { display: none !important; }
-      .sim-toast {
-        font-size: 11px;
-        padding: 6px 12px;
-        max-width: calc(100% - 20px);
-        white-space: normal;
-        text-align: center;
-        line-height: 1.4;
-      }
-
-      /* Scene 0 矩阵发布 */
-      .vp-phone { min-height: 240px; max-height: 270px; }
-      .vp-right-form { padding: 12px; gap: 11px; }
-      .vp-acct-card { padding: 10px 4px; }
-      .vp-acct-name { font-size: 10.5px; }
-      .vp-acct-fans { font-size: 9px; }
-      .vp-footer-row { flex-wrap: wrap; gap: 8px !important; }
-      .vp-footer-row > .wb-pill { width: 100%; justify-content: center; }
-
-      /* Scene 1 数据总览 */
-      .hm-big-num { font-size: 24px; }
-      .hm-ch-num { font-size: 17px; }
-      .hm-ch-card { padding: 10px 11px; }
-
-      /* Scene 2 超爆选题 */
-      .mt-search-bar { flex-wrap: wrap; gap: 6px; }
-      .mt-search-input { min-width: 100%; }
-      .mt-sort-row { flex-wrap: wrap; gap: 6px; }
-      .mt-real-card { grid-template-columns: 62px minmax(0, 1fr); gap: 9px; padding: 10px; }
-      .mt-real-card img { width: 62px; height: 74px; }
-
-      /* Scene 3 超棒视频拆解 */
-      .ts-url-bar { padding: 8px 10px; gap: 7px; }
-      .ts-url-input { font-size: 11px; }
-      .ts-deliv-card { padding: 10px; }
-
-      /* Scene 4 短视频改写流水线 */
-      .rws-top { flex-wrap: wrap; padding: 10px 12px; gap: 8px; }
-      .rws-col { padding: 10px 11px; }
-      .rws-metrics { gap: 8px; padding: 10px; }
-
-      /* Scene 5 公众号发布 */
-      .wx-flow { gap: 4px; padding: 8px 8px 0; }
-      .wx-flow-step { padding: 6px 2px; font-size: 9.5px; border-radius: 8px; }
-      .wx-flow-step b { font-size: 9px; }
-      .ws-head-row { flex-wrap: wrap; gap: 8px; }
-      .ws-cover-row { flex-wrap: wrap; gap: 8px; }
-      .ws-cover-row > .wb-pill { margin-left: 0 !important; width: 100%; justify-content: center; }
 
       /* 5. 能力信任横条 */
       .trust-strip { padding: 18px 0; }
@@ -1585,7 +1528,8 @@
           </div>
         </div>
 
-        <div class="wb-shell" data-reveal>
+        <div class="wb-scale" id="wbScale" data-reveal>
+        <div class="wb-shell" id="wbShell">
           <!-- 1:1 还原真实左侧栏 -->
           <aside class="wb-sidebar" aria-hidden="true">
             <div class="wb-sb-brand">
@@ -2179,6 +2123,7 @@
 
             </div>
           </div>
+        </div>
         </div>
       </div>
     </section>
@@ -3117,6 +3062,24 @@
           }, 750);
         }
       };
+
+      const wbScale = document.getElementById('wbScale');
+      const wbShell = document.getElementById('wbShell');
+      const WB_DESIGN_W = 1040;
+      const fitShell = () => {
+        if (!wbScale || !wbShell) return;
+        if (window.innerWidth > 980) {
+          wbShell.style.transform = '';
+          wbScale.style.height = '';
+          return;
+        }
+        const k = Math.min(1, wbScale.clientWidth / WB_DESIGN_W);
+        wbShell.style.transform = `scale(${k})`;
+        wbScale.style.height = `${Math.ceil(wbShell.offsetHeight * k)}px`;
+      };
+      window.addEventListener('resize', fitShell);
+      if (window.ResizeObserver && wbShell) new ResizeObserver(fitShell).observe(wbShell);
+      fitShell();
 
       const setChapter = (idx) => {
         activeChapter = (idx + scenes.length) % scenes.length;
