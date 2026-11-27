@@ -1,0 +1,1387 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>接入流程与积分规则 — 明日之星</title>
+  <meta name="description" content="3 分钟完成明日之星全渠道接入：微信公众号官方接口 5 步配置、6 大视频平台矩阵发布规格与透明积分规则明细。" />
+  <link rel="icon" type="image/svg+xml" href="assets/brand/logo-mark.svg" />
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/brand/favicon-32.png" />
+  <style>
+    :root {
+      --bg: #ffffff;
+      --bg-soft: #f6f8fb;
+      --surface: #ffffff;
+      --ink: #0f172a;
+      --ink-2: #334155;
+      --ink-3: #64748b;
+      --ink-4: #94a3b8;
+      --line: rgba(15, 23, 42, 0.085);
+      --line-strong: rgba(15, 23, 42, 0.14);
+      --accent: #ea580c;
+      --accent-hover: #dc4c07;
+      --accent-soft: #fff7ed;
+      --accent-border: rgba(234, 88, 12, 0.28);
+      --accent-ink: #c2410c;
+      --ok: #059669;
+      --ok-soft: #ecfdf5;
+      --ok-border: #a7f3d0;
+      --warn: #b45309;
+      --warn-soft: #fffbeb;
+      --warn-border: #fde68a;
+      --err: #b91c1c;
+      --err-soft: #fef2f2;
+      --ease: cubic-bezier(0.22, 1, 0.36, 1);
+      --font-sans: "Plus Jakarta Sans", "Geist", "PingFang SC", "HarmonyOS Sans SC", "Hiragino Sans GB", "Microsoft YaHei UI", system-ui, -apple-system, sans-serif;
+      --font-mono: "GeistMono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    }
+
+    * { box-sizing: border-box; }
+    html {
+      scroll-behavior: smooth;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: var(--font-sans);
+      -webkit-font-smoothing: antialiased;
+    }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      overflow-x: hidden;
+      line-height: 1.7;
+      font-size: 15px;
+    }
+    a { color: inherit; }
+    button { font-family: inherit; }
+    img { display: block; max-width: 100%; }
+
+    .container {
+      width: 100%;
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* ================= 官方平台 SVG 徽章 ================= */
+    .p-badge {
+      display: inline-grid;
+      place-items: center;
+      flex: none;
+      border-radius: 8px;
+    }
+    .p-badge svg { width: 62%; height: 62%; display: block; }
+    .p-badge.is-xhs { background: #fff1f2; color: #ff2442; border: 1px solid rgba(255, 36, 66, 0.16); }
+    .p-badge.is-dy  { background: #0f172a; color: #ffffff; }
+    .p-badge.is-ch  { background: #fff7ed; color: #fa9d3b; border: 1px solid rgba(250, 157, 59, 0.24); }
+    .p-badge.is-wx  { background: #ecfdf5; color: #07c160; border: 1px solid rgba(7, 193, 96, 0.2); }
+    .p-badge.is-bl  { background: #fdf2f8; color: #fb7299; border: 1px solid rgba(251, 114, 153, 0.22); }
+    .p-badge.is-yt  { background: #fef2f2; color: #ff0033; border: 1px solid rgba(255, 0, 51, 0.16); }
+    .p-badge.is-x   { background: #f1f5f9; color: #0f172a; border: 1px solid rgba(15, 23, 42, 0.12); }
+
+    /* ================= 顶部导航栏 ================= */
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--line);
+    }
+    .nav-inner {
+      height: 70px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      font-weight: 800;
+      font-size: 16.5px;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+      white-space: nowrap;
+    }
+    .brand img { width: 28px; height: 28px; border-radius: 8px; }
+    .brand-tag {
+      font-size: 11.5px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 6px;
+      background: var(--bg-soft);
+      border: 1px solid var(--line);
+      color: var(--ink-3);
+    }
+    .nav-menu {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .nav-link {
+      padding: 7px 12px;
+      border-radius: 8px;
+      font-size: 13.5px;
+      font-weight: 550;
+      color: var(--ink-2);
+      text-decoration: none;
+      white-space: nowrap;
+      transition: color 160ms ease, background 160ms ease;
+    }
+    .nav-link:hover { color: var(--ink); background: var(--bg-soft); }
+    .nav-actions { display: flex; align-items: center; gap: 8px; }
+
+    /* ================= 按钮体系（与官网统一收紧质感） ================= */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      height: 40px;
+      padding: 0 18px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 650;
+      text-decoration: none;
+      cursor: pointer;
+      border: 1px solid transparent;
+      white-space: nowrap;
+      transition: transform 200ms var(--ease), box-shadow 200ms var(--ease), background 180ms ease, border-color 180ms ease;
+    }
+    .btn-sm { height: 36px; padding: 0 14px; font-size: 13px; border-radius: 9px; }
+    .btn-primary {
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(180deg, #fb7a24 0%, #ea580c 100%);
+      color: #ffffff;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 0 0 1px rgba(194, 65, 12, 0.85), 0 10px 24px -10px rgba(234, 88, 12, 0.62);
+    }
+    .btn-primary:hover {
+      background: linear-gradient(180deg, #f97316 0%, #dc4c07 100%);
+      transform: translateY(-1px);
+    }
+    .btn-primary::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -70%;
+      width: 45%;
+      height: 100%;
+      background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.42), transparent);
+      transform: skewX(-20deg);
+      animation: btnShine 3.8s ease-in-out infinite;
+      pointer-events: none;
+    }
+    @keyframes btnShine { 0%, 62% { left: -70%; } 100% { left: 140%; } }
+    .btn-outline {
+      background: #ffffff;
+      color: var(--ink);
+      border-color: var(--line-strong);
+      box-shadow: 0 1px 2px rgba(15, 23, 42, 0.06), inset 0 -1px 0 rgba(15, 23, 42, 0.05);
+    }
+    .btn-outline:hover { background: var(--bg-soft); border-color: rgba(15, 23, 42, 0.24); transform: translateY(-1px); }
+
+    /* ================= Hero 头部（细网格 + 流动极光背景） ================= */
+    .guide-hero {
+      position: relative;
+      isolation: isolate;
+      overflow: hidden;
+      padding: 46px 0 36px;
+      border-bottom: 1px solid var(--line);
+    }
+    .guide-hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -2;
+      background-image:
+        linear-gradient(rgba(15, 23, 42, 0.055) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(15, 23, 42, 0.055) 1px, transparent 1px);
+      background-size: 44px 44px;
+      -webkit-mask-image: radial-gradient(ellipse 75% 80% at 50% 25%, #000 30%, transparent 80%);
+      mask-image: radial-gradient(ellipse 75% 80% at 50% 25%, #000 30%, transparent 80%);
+    }
+    .guide-hero::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: -170px;
+      z-index: -1;
+      width: 920px;
+      height: 460px;
+      transform: translateX(-50%);
+      background:
+        radial-gradient(closest-side at 30% 52%, rgba(249, 115, 22, 0.18), transparent 70%),
+        radial-gradient(closest-side at 72% 46%, rgba(16, 185, 129, 0.14), transparent 70%);
+      filter: blur(22px);
+      animation: heroAurora 12s ease-in-out infinite alternate;
+      pointer-events: none;
+    }
+    @keyframes heroAurora {
+      0% { transform: translateX(-50%) translateY(0) scale(1); }
+      100% { transform: translateX(-46%) translateY(14px) scale(1.05); }
+    }
+    .hero-kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 4px 10px;
+      border-radius: 7px;
+      background: var(--accent-soft);
+      border: 1px solid var(--accent-border);
+      color: var(--accent-ink);
+      font-size: 12px;
+      font-weight: 700;
+      margin-bottom: 14px;
+    }
+    .guide-hero h1 {
+      margin: 0 0 12px;
+      font-size: clamp(28px, 4.2vw, 44px);
+      font-weight: 850;
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+      background: linear-gradient(180deg, #0f172a 30%, #334155 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .guide-hero-sub {
+      margin: 0 0 20px;
+      max-width: 680px;
+      font-size: 15.5px;
+      color: var(--ink-3);
+      line-height: 1.68;
+    }
+    .hero-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 9px;
+      margin-bottom: 22px;
+    }
+    .hero-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 11px;
+      border-radius: 8px;
+      background: #ffffff;
+      border: 1px solid var(--line-strong);
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--ink-2);
+      box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+    }
+    .hero-pill i {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--ok);
+      display: inline-block;
+    }
+    .hero-pill.is-orange i { background: var(--accent); }
+    .hero-quick-acts {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    /* ================= 主体双栏：左侧粘性目录 + 右侧正文 ================= */
+    .doc-layout {
+      display: grid;
+      grid-template-columns: 240px minmax(0, 1fr);
+      gap: 32px;
+      padding: 34px 0 80px;
+      align-items: start;
+    }
+    .toc-aside {
+      position: sticky;
+      top: 90px;
+      background: #ffffff;
+      border: 1px solid var(--line-strong);
+      border-radius: 14px;
+      padding: 16px 12px;
+      box-shadow: 0 10px 26px -18px rgba(15, 23, 42, 0.14);
+    }
+    .toc-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 8px 10px;
+      margin-bottom: 8px;
+      border-bottom: 1px solid var(--line);
+      font-size: 11.5px;
+      font-weight: 750;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--ink-4);
+    }
+    .toc-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .toc-link {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      padding: 8px 9px;
+      border-radius: 9px;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--ink-2);
+      transition: background 150ms ease, color 150ms ease;
+    }
+    .toc-link:hover { background: var(--bg-soft); color: var(--ink); }
+    .toc-link.is-active { background: var(--accent-soft); color: var(--accent-ink); font-weight: 700; }
+    .toc-idx {
+      width: 22px;
+      height: 22px;
+      border-radius: 6px;
+      background: var(--bg-soft);
+      border: 1px solid var(--line);
+      color: var(--ink-3);
+      font-family: var(--font-mono);
+      font-size: 10.5px;
+      font-weight: 700;
+      display: grid;
+      place-items: center;
+      flex: none;
+    }
+    .toc-link.is-active .toc-idx {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #ffffff;
+    }
+    .toc-foot {
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px solid var(--line);
+    }
+
+    /* 移动端顶部横向目录栏（仅 <= 920px 显示） */
+    .mobile-toc-wrap {
+      display: none;
+      position: sticky;
+      top: 60px;
+      z-index: 90;
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--line);
+      padding: 8px 16px;
+    }
+    .mobile-toc {
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+    .mobile-toc::-webkit-scrollbar { display: none; }
+    .m-toc-chip {
+      flex: none;
+      padding: 6px 12px;
+      border-radius: 8px;
+      background: var(--bg-soft);
+      border: 1px solid var(--line);
+      font-size: 12.5px;
+      font-weight: 650;
+      color: var(--ink-2);
+      text-decoration: none;
+      white-space: nowrap;
+    }
+    .m-toc-chip.is-active {
+      background: #0f172a;
+      border-color: #0f172a;
+      color: #ffffff;
+    }
+
+    /* ================= 正文模块卡片 ================= */
+    .doc-main {
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+      min-width: 0;
+    }
+    .doc-section {
+      scroll-margin-top: 94px;
+      background: #ffffff;
+      border: 1px solid var(--line-strong);
+      border-radius: 16px;
+      padding: 28px;
+      box-shadow: 0 12px 32px -22px rgba(15, 23, 42, 0.14);
+      position: relative;
+      overflow: hidden;
+    }
+    .doc-section::before {
+      content: "";
+      position: absolute;
+      left: 16%;
+      right: 16%;
+      top: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(234, 88, 12, 0.45), transparent);
+      pointer-events: none;
+    }
+    .sec-head {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 10px;
+    }
+    .sec-badge {
+      display: inline-flex;
+      align-items: center;
+      height: 24px;
+      padding: 0 9px;
+      border-radius: 6px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 750;
+      background: #0f172a;
+      color: #ffffff;
+    }
+    .sec-badge.is-orange { background: var(--accent); }
+    .sec-badge.is-green { background: var(--ok); }
+    .sec-head h2 {
+      margin: 0;
+      font-size: 22px;
+      font-weight: 850;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+    }
+    .sec-lead {
+      margin: 0 0 20px;
+      font-size: 14.5px;
+      color: var(--ink-3);
+      line-height: 1.65;
+    }
+
+    /* 快速上手 3 步卡 */
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+    .mini-card {
+      padding: 16px;
+      border-radius: 12px;
+      background: var(--bg-soft);
+      border: 1px solid var(--line);
+      position: relative;
+      overflow: hidden;
+    }
+    .mini-card strong {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14.5px;
+      font-weight: 750;
+      color: var(--ink);
+      margin-bottom: 6px;
+    }
+    .mini-card p {
+      margin: 0;
+      font-size: 13px;
+      color: var(--ink-3);
+      line-height: 1.6;
+    }
+    .step-num {
+      width: 22px;
+      height: 22px;
+      border-radius: 6px;
+      background: var(--accent);
+      color: #ffffff;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 800;
+      display: grid;
+      place-items: center;
+      flex: none;
+    }
+
+    /* Callout 提示框 */
+    .callout {
+      padding: 13px 15px;
+      border-radius: 11px;
+      font-size: 13.5px;
+      line-height: 1.65;
+      margin: 16px 0;
+      border: 1px solid var(--line);
+      background: var(--bg-soft);
+      color: var(--ink-2);
+    }
+    .callout.is-ok { background: var(--ok-soft); border-color: var(--ok-border); color: #065f46; }
+    .callout.is-warn { background: var(--warn-soft); border-color: var(--warn-border); color: #92400e; }
+    .callout a { color: var(--accent-ink); font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
+    code {
+      font-family: var(--font-mono);
+      font-size: 12.5px;
+      padding: 2px 6px;
+      border-radius: 5px;
+      background: #f1f5f9;
+      border: 1px solid var(--line);
+      color: var(--ink);
+    }
+
+    /* 公众号 5 步卡片 */
+    .wx-step-block {
+      padding: 18px 0;
+      border-top: 1px solid var(--line);
+    }
+    .wx-step-block:first-of-type { border-top: none; padding-top: 6px; }
+    .wx-step-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 0 0 10px;
+      font-size: 16.5px;
+      font-weight: 800;
+      color: var(--ink);
+    }
+    .wx-step-idx {
+      padding: 2px 9px;
+      border-radius: 6px;
+      background: var(--ok);
+      color: #ffffff;
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+      font-weight: 750;
+      flex: none;
+    }
+    .action-list {
+      margin: 0 0 12px;
+      padding-left: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+      font-size: 14px;
+      color: var(--ink-2);
+    }
+    .action-list li strong { color: var(--ink); }
+    .action-list a { color: var(--accent-ink); font-weight: 650; }
+
+    /* 图示容器与放大预览 */
+    .shot-figure {
+      margin: 14px 0 4px;
+      border: 1px solid var(--line-strong);
+      border-radius: 12px;
+      overflow: hidden;
+      background: #f8fafc;
+    }
+    .shot-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 8px 12px;
+      background: #f1f5f9;
+      border-bottom: 1px solid var(--line);
+      font-size: 11.5px;
+      color: var(--ink-3);
+    }
+    .shot-dots { display: inline-flex; gap: 5px; }
+    .shot-dots i { width: 8px; height: 8px; border-radius: 50%; display: block; }
+    .shot-img-wrap {
+      cursor: zoom-in;
+      background: #ffffff;
+    }
+    .shot-img-wrap img {
+      width: 100%;
+      height: auto;
+      transition: transform 200ms ease;
+    }
+    .shot-img-wrap:hover img { transform: scale(1.006); }
+    .shot-cap {
+      padding: 8px 12px;
+      font-size: 12px;
+      color: var(--ink-3);
+      background: #ffffff;
+      border-top: 1px solid var(--line);
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    /* 6 大平台规格矩阵 */
+    .plat-spec-card {
+      padding: 14px;
+      border-radius: 12px;
+      background: #ffffff;
+      border: 1px solid var(--line-strong);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .plat-spec-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    .plat-spec-title {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      font-weight: 750;
+      color: var(--ink);
+    }
+    .spec-tag {
+      font-family: var(--font-mono);
+      font-size: 10.5px;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 6px;
+      background: var(--ok-soft);
+      color: var(--ok);
+      border: 1px solid var(--ok-border);
+      white-space: nowrap;
+    }
+    .plat-spec-meta {
+      font-size: 12.5px;
+      color: var(--ink-3);
+      line-height: 1.55;
+    }
+
+    /* 表格响应式外壳 */
+    .table-wrap {
+      width: 100%;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      border: 1px solid var(--line-strong);
+      border-radius: 12px;
+      margin-top: 12px;
+    }
+    .data-table {
+      width: 100%;
+      min-width: 520px;
+      border-collapse: collapse;
+      font-size: 13.5px;
+    }
+    .data-table th, .data-table td {
+      text-align: left;
+      padding: 11px 13px;
+      border-bottom: 1px solid var(--line);
+      vertical-align: top;
+    }
+    .data-table tr:last-child td { border-bottom: none; }
+    .data-table th {
+      background: var(--bg-soft);
+      color: var(--ink-3);
+      font-size: 12px;
+      font-weight: 750;
+    }
+    .pts-pill {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 750;
+      padding: 2px 8px;
+      border-radius: 6px;
+      background: var(--accent-soft);
+      color: var(--accent-ink);
+      border: 1px solid var(--accent-border);
+      white-space: nowrap;
+    }
+    .pts-pill.is-free {
+      background: var(--ok-soft);
+      color: var(--ok);
+      border-color: var(--ok-border);
+    }
+    .err-code {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 750;
+      padding: 2px 7px;
+      border-radius: 6px;
+      background: var(--err-soft);
+      color: var(--err);
+      white-space: nowrap;
+    }
+
+    /* 底部引导卡片 */
+    .bottom-cta {
+      padding: 34px 24px;
+      border-radius: 16px;
+      background: radial-gradient(500px 200px at 50% 0%, rgba(234, 88, 12, 0.08), transparent 72%), var(--bg-soft);
+      border: 1px solid var(--line-strong);
+      text-align: center;
+    }
+    .bottom-cta h3 {
+      margin: 0 0 8px;
+      font-size: 22px;
+      font-weight: 850;
+      letter-spacing: -0.02em;
+    }
+    .bottom-cta p {
+      margin: 0 0 20px;
+      font-size: 14.5px;
+      color: var(--ink-3);
+    }
+    .bottom-cta-acts {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    /* 页脚 */
+    .site-footer {
+      background: #f3f4f6;
+      border-top: 1px solid var(--line);
+      padding: 28px 0;
+      color: var(--ink-3);
+      font-size: 13px;
+    }
+    .footer-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .footer-links { display: flex; gap: 16px; flex-wrap: wrap; }
+    .footer-links a { text-decoration: none; color: var(--ink-2); }
+    .footer-links a:hover { color: var(--accent); }
+
+    /* 灯箱大图 */
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      background: rgba(15, 23, 42, 0.84);
+      backdrop-filter: blur(6px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .lightbox.is-open { display: flex; }
+    .lightbox-inner {
+      max-width: min(94vw, 1180px);
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+    .lightbox-inner img {
+      max-width: 100%;
+      max-height: 80vh;
+      border-radius: 12px;
+      background: #ffffff;
+      box-shadow: 0 24px 64px rgba(0, 0, 0, 0.45);
+    }
+    .lightbox-bar {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      color: #f8fafc;
+      font-size: 13px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .lightbox-close {
+      padding: 6px 14px;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.28);
+      background: rgba(255, 255, 255, 0.14);
+      color: #ffffff;
+      font-weight: 650;
+      cursor: pointer;
+    }
+
+    @media (max-width: 920px) {
+      .nav-menu, .toc-aside { display: none; }
+      .mobile-toc-wrap { display: block; }
+      .doc-layout { grid-template-columns: 1fr; padding: 20px 0 56px; gap: 20px; }
+      .grid-3 { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 640px) {
+      .container { padding: 0 16px; }
+      .nav-inner { height: 60px; }
+      .brand { font-size: 15.5px; }
+      .brand-tag { display: none; }
+      .guide-hero { padding: 28px 0 24px; }
+      .guide-hero-sub { font-size: 14px; margin-bottom: 16px; }
+      .hero-quick-acts { gap: 8px; }
+      .hero-quick-acts .btn-primary { width: 100%; }
+      .hero-quick-acts .btn-outline { flex: 1 1 0; min-width: 0; padding: 0 10px; font-size: 13px; }
+      .doc-section { padding: 20px 16px; border-radius: 14px; }
+      .sec-head h2 { font-size: 18.5px; }
+      .grid-2 { grid-template-columns: 1fr; }
+      .plat-grid-m { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: 10px; }
+      .plat-spec-card { padding: 12px; }
+      .plat-spec-head { flex-direction: column; align-items: flex-start; gap: 5px; }
+      .bottom-cta { padding: 26px 16px; }
+      .bottom-cta h3 { font-size: 19px; }
+      .bottom-cta-acts .btn { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 官方高清 SVG 图标符号库 -->
+  <svg xmlns="http://www.w3.org/2000/svg" style="display:none;" aria-hidden="true">
+    <symbol id="ico-xhs" viewBox="0 0 24 24"><path fill="currentColor" d="M22.405 9.879c.002.016.01.02.07.019h.725a.797.797 0 0 0 .78-.972a.794.794 0 0 0-.884-.618a.795.795 0 0 0-.692.794c0 .101-.002.666.001.777m-11.509 4.808c-.203.001-1.353.004-1.685.003a2.5 2.5 0 0 1-.766-.126a.025.025 0 0 0-.03.014L7.7 16.127a.025.025 0 0 0 .01.032c.111.06.336.124.495.124c.66.01 1.32.002 1.981 0q.017 0 .023-.015l.712-1.545a.025.025 0 0 0-.024-.036zM.477 9.91c-.071 0-.076.002-.076.01l-.01.08c-.027.397-.038.495-.234 3.06c-.012.24-.034.389-.135.607c-.026.057-.033.042.003.112c.046.092.681 1.523.787 1.74c.008.015.011.02.017.02c.008 0 .033-.026.047-.044q.219-.282.371-.606c.306-.635.44-1.325.486-1.706c.014-.11.021-.22.03-.33l.204-2.616l.022-.293c.003-.029 0-.033-.03-.034zm7.203 3.757a1.4 1.4 0 0 1-.135-.607c-.004-.084-.031-.39-.235-3.06a.4.4 0 0 0-.01-.082c-.004-.011-.052-.008-.076-.008h-1.48c-.03.001-.034.005-.03.034l.021.293q.114 1.473.233 2.946c.05.4.186 1.085.487 1.706c.103.215.223.419.37.606c.015.018.037.051.048.049c.02-.003.742-1.642.804-1.765c.036-.07.03-.055.003-.112m3.861-.913h-.872a.126.126 0 0 1-.116-.178l1.178-2.625a.025.025 0 0 0-.023-.035l-1.318-.003a.148.148 0 0 1-.135-.21l.876-1.954a.025.025 0 0 0-.023-.035h-1.56q-.017 0-.024.015l-.926 2.068c-.085.169-.314.634-.399.938a.5.5 0 0 0-.02.191a.46.46 0 0 0 .23.378a1 1 0 0 0 .46.119h.59c.041 0-.688 1.482-.834 1.972a.5.5 0 0 0-.023.172a.47.47 0 0 0 .23.398c.15.092.342.12.475.12l1.66-.001q.017 0 .023-.015l.575-1.28a.025.025 0 0 0-.024-.035m-6.93-4.937H3.1a.032.032 0 0 0-.034.033c0 1.048-.01 2.795-.01 6.829c0 .288-.269.262-.28.262h-.74c-.04.001-.044.004-.04.047c.001.037.465 1.064.555 1.263c.01.02.03.033.051.033c.157.003.767.009.938-.014c.153-.02.3-.06.438-.132c.3-.156.49-.419.595-.765c.052-.172.075-.353.075-.533q.003-3.495-.007-6.991a.03.03 0 0 0-.032-.032zm11.784 6.896q-.002-.02-.024-.022h-1.465c-.048-.001-.049-.002-.05-.049v-4.66c0-.072-.005-.07.07-.07h.863c.08 0 .075.004.075-.074V8.393c0-.082.006-.076-.08-.076h-3.5c-.064 0-.075-.006-.075.073v1.445c0 .083-.006.077.08.077h.854c.075 0 .07-.004.07.07v4.624c0 .095.008.084-.085.084c-.37 0-1.11-.002-1.304 0c-.048.001-.06.03-.06.03l-.697 1.519s-.014.025-.008.036s.013.008.058.008q2.622.003 5.243.002c.03-.001.034-.006.035-.033zm4.177-3.43q0 .021-.02.024c-.346.006-.692.004-1.037.004q-.021-.003-.022-.024q-.006-.651-.01-1.303c0-.072-.006-.071.07-.07l.733-.003c.041 0 .081.002.12.015c.093.025.16.107.165.204c.006.431.002 1.153.001 1.153m2.67.244a1.95 1.95 0 0 0-.883-.222h-.18c-.04-.001-.04-.003-.042-.04V10.21q.001-.198-.025-.394a1.8 1.8 0 0 0-.153-.53a1.53 1.53 0 0 0-.677-.71a2.2 2.2 0 0 0-1-.258c-.153-.003-.567 0-.72 0c-.07 0-.068.004-.068-.065V7.76c0-.031-.01-.041-.046-.039H17.93s-.016 0-.023.007q-.008.008-.008.023v.546c-.008.036-.057.015-.082.022h-.95c-.022.002-.028.008-.03.032v1.481c0 .09-.004.082.082.082h.913c.082 0 .072.128.072.128v1.148s.003.117-.06.117h-1.482c-.068 0-.06.082-.06.082v1.445s-.01.068.064.068h1.457c.082 0 .076-.006.076.079v3.225c0 .088-.007.081.082.081h1.43c.09 0 .082.007.082-.08v-3.27c0-.029.006-.035.033-.035l2.323-.003a.7.7 0 0 1 .28.061a.46.46 0 0 1 .274.407c.008.395.003.79.003 1.185c0 .259-.107.367-.33.367h-1.218c-.023.002-.029.008-.028.033q.276.655.57 1.303a.05.05 0 0 0 .04.026c.17.005.34.002.51.003c.15-.002.517.004.666-.01a2 2 0 0 0 .408-.075c.59-.18.975-.698.976-1.313v-1.981q.001-.191-.034-.38c0 .078-.029-.641-.724-.998"/></symbol>
+    <symbol id="ico-dy" viewBox="0 0 24 24"><path fill="currentColor" d="M12.525.02c1.31-.02 2.61-.01 3.91-.02c.08 1.53.63 3.09 1.75 4.17c1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97c-.57-.26-1.1-.59-1.62-.93c-.01 2.92.01 5.84-.02 8.75c-.08 1.4-.54 2.79-1.35 3.94c-1.31 1.92-3.58 3.17-5.91 3.21c-1.43.08-2.86-.31-4.08-1.03c-2.02-1.19-3.44-3.37-3.65-5.71c-.02-.5-.03-1-.01-1.49c.18-1.9 1.12-3.72 2.58-4.96c1.66-1.44 3.98-2.13 6.15-1.72c.02 1.48-.04 2.96-.04 4.44c-.99-.32-2.15-.23-3.02.37c-.63.41-1.11 1.04-1.36 1.75c-.21.51-.15 1.07-.14 1.61c.24 1.64 1.82 3.02 3.5 2.87c1.12-.01 2.19-.66 2.77-1.61c.19-.33.4-.67.41-1.06c.1-1.79.06-3.57.07-5.36c.01-4.03-.01-8.05.02-12.07"/></symbol>
+    <symbol id="ico-ch" viewBox="0 0 24 24"><path fill="currentColor" d="M19.194 3.181c1.162-.47 2.155-.019 2.672 1.277C23.26 7.944 20 21.133 17.441 21.133c-.828 0-1.657-.688-2.624-1.926a23 23 0 0 1-1.357-1.974c-.374-.6-.742-1.232-1.095-1.87L12 14.69l-.018.032a44 44 0 0 1-1.442 2.511c-.467.75-.922 1.416-1.358 1.974c-.966 1.238-1.795 1.926-2.623 1.926C4 21.133.74 7.943 2.133 4.458C2.651 3.162 3.644 2.71 4.806 3.18c.842.34 1.772 1.156 2.81 2.376A32 32 0 0 1 9.548 8.11a59 59 0 0 1 2.137 3.36l.316.538l.316-.538a62 62 0 0 1 1.696-2.71l.44-.65a32 32 0 0 1 1.931-2.553c1.039-1.22 1.968-2.035 2.81-2.376M4.324 4.353c-.49-.199-.743-.084-1.005.57c-.457 1.145-.265 4.028.413 7.264l.158.724l.174.733c.856 3.46 2.087 6.224 2.495 6.224c.28 0 .889-.506 1.615-1.436c.405-.518.835-1.148 1.28-1.863c.362-.581.72-1.194 1.063-1.816l.415-.767l.348-.671l-.364-.638l-.332-.566a58 58 0 0 0-2.09-3.287a31 31 0 0 0-1.852-2.45c-.916-1.077-1.716-1.778-2.318-2.021m16.356.57c-.261-.654-.514-.769-1.005-.57c-.602.243-1.402.944-2.317 2.02a31 31 0 0 0-1.852 2.45a56 56 0 0 0-1.687 2.615l-.574.962l-.527.915l.181.35l.245.465a43 43 0 0 0 1.401 2.438a22 22 0 0 0 1.28 1.864c.727.93 1.336 1.436 1.616 1.436c.408 0 1.639-2.763 2.494-6.224l.174-.733c.805-3.523 1.063-6.758.571-7.987"/></symbol>
+    <symbol id="ico-bl" viewBox="0 0 24 24"><path fill="currentColor" d="M17.813 4.653h.854q2.266.08 3.773 1.574Q23.946 7.72 24 9.987v7.36q-.054 2.266-1.56 3.773c-1.506 1.507-2.262 1.524-3.773 1.56H5.333q-2.266-.054-3.773-1.56C.053 19.614.036 18.858 0 17.347v-7.36q.054-2.267 1.56-3.76t3.773-1.574h.774l-1.174-1.12a1.23 1.23 0 0 1-.373-.906q0-.534.373-.907l.027-.027q.4-.373.92-.373t.92.373L9.653 4.44q.107.106.187.213h4.267a.8.8 0 0 1 .16-.213l2.853-2.747q.4-.373.92-.373t.92.373a1.23 1.23 0 0 1 .373.907q0 .533-.373.906zM5.333 7.24Q4.187 7.293 3.4 8.08q-.786.787-.84 1.933v7.36q.054 1.147.84 1.934q.787.786 1.933.84h13.334q1.146-.054 1.933-.84q.787-.787.84-1.934v-7.36q-.053-1.146-.84-1.933q-.787-.787-1.933-.84zM8 11.107q.56 0 .933.373q.374.373.4.933v1.28q-.026.56-.4.934q-.373.373-.933.4q-.56-.027-.933-.4q-.374-.374-.374-.934v-1.28q0-.56.374-.933q.373-.374.933-.373m8 0q.56 0 .933.373q.374.373.374.933v1.28q0 .56-.374.934q-.373.373-.933.4q-.56-.027-.933-.4q-.374-.374-.374-.934v-1.28q0-.56.374-.933q.373-.374.933-.373"/></symbol>
+    <symbol id="ico-yt" viewBox="0 0 24 24"><path fill="currentColor" d="M23.498 6.186a3.02 3.02 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.02 3.02 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.02 3.02 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.02 3.02 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814M9.545 15.568V8.432L15.818 12z"/></symbol>
+    <symbol id="ico-x" viewBox="0 0 24 24"><path fill="currentColor" d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584l-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z"/></symbol>
+  </svg>
+
+  <!-- 顶部导航 -->
+  <header class="site-header">
+    <div class="container nav-inner">
+      <a class="brand" href="intro.html">
+        <img src="assets/brand/logo-mark.svg" alt="明日之星" />
+        <span>明日之星</span>
+        <span class="brand-tag">接入流程</span>
+      </a>
+
+      <nav class="nav-menu" aria-label="指南导航">
+        <a class="nav-link" href="#quickstart">快速上手</a>
+        <a class="nav-link" href="#wechat">公众号接入</a>
+        <a class="nav-link" href="#video">6 平台视频接入</a>
+        <a class="nav-link" href="#credits">积分规则</a>
+        <a class="nav-link" href="#troubleshoot">常见报错</a>
+      </nav>
+
+      <div class="nav-actions">
+        <a class="btn btn-outline btn-sm" href="intro.html">返回官网</a>
+        <a class="btn btn-primary btn-sm" href="/#/register">免费试用 →</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- 移动端横向锚点栏 -->
+  <div class="mobile-toc-wrap" aria-label="本页章节">
+    <nav class="mobile-toc" id="mobileToc">
+      <a class="m-toc-chip is-active" href="#quickstart">快速上手</a>
+      <a class="m-toc-chip" href="#wechat">公众号 5 步接入</a>
+      <a class="m-toc-chip" href="#video">6 平台视频接入</a>
+      <a class="m-toc-chip" href="#credits">积分规则</a>
+      <a class="m-toc-chip" href="#troubleshoot">常见报错</a>
+    </nav>
+  </div>
+
+  <main>
+    <!-- Hero 头部 -->
+    <section class="guide-hero">
+      <div class="container">
+        <span class="hero-kicker">接入指引 · SETUP GUIDE</span>
+        <h1>3 分钟完成全渠道接入</h1>
+        <p class="guide-hero-sub">
+          从开启免费试用到完成微信公众号开发者接口绑定、6 大视频平台矩阵授权，以及透明的积分计费标准，一页全部讲清。
+        </p>
+        <div class="hero-badges">
+          <span class="hero-pill"><i></i>预计耗时 3 分钟</span>
+          <span class="hero-pill"><i></i>微信官方直连接口</span>
+          <span class="hero-pill is-orange"><i></i>多平台发布与排版 0 积分</span>
+        </div>
+        <div class="hero-quick-acts">
+          <a class="btn btn-primary" href="/#/register">开启免费试用 →</a>
+          <a class="btn btn-outline" href="#wechat">看公众号 5 步教程</a>
+          <a class="btn btn-outline" href="#credits">看积分扣费表</a>
+        </div>
+      </div>
+    </section>
+
+    <div class="container doc-layout">
+      <!-- 桌面端左侧粘性目录 -->
+      <aside class="toc-aside" aria-label="教程目录">
+        <div class="toc-head">
+          <span>本页目录</span>
+          <span style="font-family:var(--font-mono);">5 节</span>
+        </div>
+        <ul class="toc-list" id="tocList">
+          <li><a class="toc-link is-active" href="#quickstart"><span class="toc-idx">01</span><span>3 步快速上手</span></a></li>
+          <li><a class="toc-link" href="#wechat"><span class="toc-idx">02</span><span>公众号 5 步接入</span></a></li>
+          <li><a class="toc-link" href="#video"><span class="toc-idx">03</span><span>6 平台视频接入</span></a></li>
+          <li><a class="toc-link" href="#credits"><span class="toc-idx">04</span><span>积分规则明细</span></a></li>
+          <li><a class="toc-link" href="#troubleshoot"><span class="toc-idx">05</span><span>常见报错排查</span></a></li>
+        </ul>
+        <div class="toc-foot">
+          <a class="btn btn-primary" href="/#/wechat-publish" style="width:100%;">前往工作台配置 →</a>
+        </div>
+      </aside>
+
+      <!-- 正文内容 -->
+      <div class="doc-main">
+
+        <!-- 01 快速上手 -->
+        <section class="doc-section" id="quickstart">
+          <div class="sec-head">
+            <span class="sec-badge is-orange">STEP 01</span>
+            <h2>3 步快速上手流程</h2>
+          </div>
+          <p class="sec-lead">无需自建代理、无需配置服务器环境，按照下面 3 步即可跑通全链路内容生产与发布。</p>
+
+          <div class="grid-3">
+            <div class="mini-card">
+              <strong><span class="step-num">1</span>绑卡开启免费试用</strong>
+              <p>选择连续包月、半年或年度会员并绑定支付方式即可启用工作台全部能力，试用期内可在个人中心随时取消。</p>
+            </div>
+            <div class="mini-card">
+              <strong><span class="step-num">2</span>绑定公众号与视频账号</strong>
+              <p>微信公众号填好 AppID / AppSecret 与白名单并点击「测试联通」；6 大视频平台走官方创作者原生授权连接。</p>
+            </div>
+            <div class="mini-card">
+              <strong><span class="step-num">3</span>跑通选题到定时发布</strong>
+              <p>在超爆选题雷达挑题、AI 一键拆解改写，用公众号画布直推草稿箱或 6 平台并行定时发。</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- 02 微信公众号接入 -->
+        <section class="doc-section" id="wechat">
+          <div class="sec-head">
+            <span class="sec-badge is-green">STEP 02</span>
+            <h2>微信公众号接入完整 5 步教程</h2>
+          </div>
+          <p class="sec-lead">适用个人订阅号、认证订阅号与服务号。只需配置一次密钥和白名单，后续每篇文章排版后均可直接推送微信官方草稿箱。</p>
+
+          <div class="grid-3" style="margin-bottom:16px;">
+            <div class="mini-card">
+              <strong>准备 1 · 管理员微信</strong>
+              <p>登录开发者平台、查看 AppSecret 与保存 IP 白名单时需管理员本人扫码确认。</p>
+            </div>
+            <div class="mini-card">
+              <strong>准备 2 · AppID 与密钥</strong>
+              <p>在开发者平台获取公众号唯一对应的 <code>wx...</code> 开头 AppID 与 32 位 AppSecret。</p>
+            </div>
+            <div class="mini-card">
+              <strong>准备 3 · 公网出口 IP</strong>
+              <p>微信接口强制校验白名单，提前在 <a href="https://www.ip138.com" target="_blank" rel="noopener noreferrer" style="color:var(--accent-ink);font-weight:700;">ip138.com ↗</a> 查好当前出口 IP。</p>
+            </div>
+          </div>
+
+          <div class="callout is-ok">
+            <strong>安全说明：</strong>你的 AppSecret 仅在服务端加密存储，前端页面不回显明文；仅在执行测试联通和草稿推送时直连微信官方接口。
+          </div>
+
+          <!-- 第 1 步 -->
+          <div class="wx-step-block">
+            <h3 class="wx-step-title"><span class="wx-step-idx">第 1 步</span>登录微信开发者平台，获取 AppID 与 AppSecret</h3>
+            <ol class="action-list">
+              <li>打开微信开发者平台 <a href="https://developers.weixin.qq.com/platform" target="_blank" rel="noopener noreferrer">https://developers.weixin.qq.com/platform ↗</a>，使用<strong>公众号管理员微信扫码登录</strong>。</li>
+              <li>在左侧进入<strong>「我的业务」→ 选择你的公众号 →「开发密钥」</strong>（旧版后台路径为「设置与开发 → 基本配置」）。</li>
+              <li>复制 <code>AppID</code>（标注 ①），点击 <code>AppSecret</code> 右侧「查看 / 重置」，管理员扫码后立即复制保存（标注 ②）。</li>
+            </ol>
+            <div class="callout is-warn">
+              <strong>注意：</strong>重置 AppSecret 会让旧密钥立刻失效。如果其他系统也在用同一个公众号接口，重置前请先确认，避免影响旧业务。
+            </div>
+            <figure class="shot-figure">
+              <div class="shot-head">
+                <span class="shot-dots"><i style="background:#f87171;"></i><i style="background:#fbbf24;"></i><i style="background:#34d399;"></i></span>
+                <span>图 1 · 微信开发者平台获取 AppID 与 AppSecret</span>
+              </div>
+              <div class="shot-img-wrap" data-lightbox-src="assets/wechat-guide/step1-developer-keys.svg" data-lightbox-caption="第 1 步：在微信开发者平台复制 AppID（①）与 AppSecret（②）">
+                <img src="assets/wechat-guide/step1-developer-keys.svg" alt="微信开发者平台获取 AppID 与 AppSecret 图示" width="1200" height="675" />
+              </div>
+              <figcaption class="shot-cap">
+                <span>依次复制 ① AppID 与 ② AppSecret</span>
+                <span>点击图片可全屏放大</span>
+              </figcaption>
+            </figure>
+          </div>
+
+          <!-- 第 2 步 -->
+          <div class="wx-step-block">
+            <h3 class="wx-step-title"><span class="wx-step-idx">第 2 步</span>在公众平台配置 IP 白名单</h3>
+            <ol class="action-list">
+              <li>打开 <a href="https://www.ip138.com" target="_blank" rel="noopener noreferrer">ip138.com ↗</a> 或 <a href="https://ip.sb" target="_blank" rel="noopener noreferrer">ip.sb ↗</a> 获取当前公网出口 IP。</li>
+              <li>在微信公众平台进入<strong>「设置与开发 → 安全中心 → IP 白名单」</strong>，点击<strong>「查看 / 修改」</strong>。</li>
+              <li>另起一行粘贴公网 IP（标注 ①），点击右下角<strong>「确认保存」</strong>（标注 ②）并用管理员微信扫码，10–30 秒生效。</li>
+            </ol>
+            <figure class="shot-figure">
+              <div class="shot-head">
+                <span class="shot-dots"><i style="background:#f87171;"></i><i style="background:#fbbf24;"></i><i style="background:#34d399;"></i></span>
+                <span>图 2 · 配置 IP 白名单</span>
+              </div>
+              <div class="shot-img-wrap" data-lightbox-src="assets/wechat-guide/step2-ip-whitelist.svg" data-lightbox-caption="第 2 步：在 IP 白名单填入公网 IP（①）并确认保存（②）">
+                <img src="assets/wechat-guide/step2-ip-whitelist.svg" alt="微信公众平台配置 IP 白名单图示" width="1200" height="675" />
+              </div>
+              <figcaption class="shot-cap">
+                <span>每行填写一个 IP，保存扫码后生效</span>
+                <span>点击图片可全屏放大</span>
+              </figcaption>
+            </figure>
+          </div>
+
+          <!-- 第 3 步 -->
+          <div class="wx-step-block">
+            <h3 class="wx-step-title"><span class="wx-step-idx">第 3 步</span>在工作台填写并保存公众号配置</h3>
+            <ol class="action-list">
+              <li>进入工作台<strong>「公众号发布」</strong>，点击顶部引导卡片第 2 步<strong>「填写配置」</strong>（或在画布节点 ⑤ 点「公众号配置」）。</li>
+              <li>在「公众号账户管理」窗口依次填入：<strong>公众号名称</strong>（①）、<strong>AppID</strong>（②）、<strong>AppSecret</strong>（③）。</li>
+              <li>保持默认<strong>直连微信官方接口</strong>，点击右下角<strong>「保存账户」</strong>（④）。支持绑定多个公众号随时切换。</li>
+            </ol>
+            <figure class="shot-figure">
+              <div class="shot-head">
+                <span class="shot-dots"><i style="background:#f87171;"></i><i style="background:#fbbf24;"></i><i style="background:#34d399;"></i></span>
+                <span>图 3 · 工作台「公众号账户管理」配置窗口</span>
+              </div>
+              <div class="shot-img-wrap" data-lightbox-src="assets/wechat-guide/step3-workbench-config.svg" data-lightbox-caption="第 3 步：填写公众号名称、AppID、AppSecret 并保存账户">
+                <img src="assets/wechat-guide/step3-workbench-config.svg" alt="工作台填写公众号配置图示" width="1200" height="675" />
+              </div>
+              <figcaption class="shot-cap">
+                <span>支持多公众号保存与一键切换</span>
+                <span>点击图片可全屏放大</span>
+              </figcaption>
+            </figure>
+          </div>
+
+          <!-- 第 4 步 -->
+          <div class="wx-step-block">
+            <h3 class="wx-step-title"><span class="wx-step-idx">第 4 步</span>点击「测试联通」，验证密钥与白名单生效</h3>
+            <ol class="action-list">
+              <li>回到引导卡片，点击第 3 步亮起的<strong>「测试联通」</strong>按钮，工作台会向微信发起官方令牌校验。</li>
+              <li>顶部标签变为绿色<strong>「已联通」</strong>且 3 个步骤全部对勾即接入完成，可点击「收起」折叠引导条。</li>
+            </ol>
+            <figure class="shot-figure">
+              <div class="shot-head">
+                <span class="shot-dots"><i style="background:#f87171;"></i><i style="background:#fbbf24;"></i><i style="background:#34d399;"></i></span>
+                <span>图 4 · 测试联通成功状态</span>
+              </div>
+              <div class="shot-img-wrap" data-lightbox-src="assets/wechat-guide/step4-test-connect.svg" data-lightbox-caption="第 4 步：测试联通通过后转为绿色已联通状态">
+                <img src="assets/wechat-guide/step4-test-connect.svg" alt="测试联通成功状态图示" width="1200" height="675" />
+              </div>
+              <figcaption class="shot-cap">
+                <span>一次联通长期可用，无需每次重复填写</span>
+                <span>点击图片可全屏放大</span>
+              </figcaption>
+            </figure>
+          </div>
+
+          <!-- 第 5 步 -->
+          <div class="wx-step-block">
+            <h3 class="wx-step-title"><span class="wx-step-idx">第 5 步</span>画布一键排版并推送至微信草稿箱</h3>
+            <ol class="action-list">
+              <li>在画布走完 ① 导入与 AI 改写 → ② 原创排版（7 套主题）→ ③ 高点击标题 → ④ 2.35:1 封面生成。</li>
+              <li>来到节点 ⑤ 点击<strong>「一键发布到公众号草稿箱」</strong>（①），自动转存正文图片与封面图至微信素材库并做回读防丢图校验（②）。</li>
+            </ol>
+            <figure class="shot-figure">
+              <div class="shot-head">
+                <span class="shot-dots"><i style="background:#f87171;"></i><i style="background:#fbbf24;"></i><i style="background:#34d399;"></i></span>
+                <span>图 5 · 一键推送草稿箱并回读校验</span>
+              </div>
+              <div class="shot-img-wrap" data-lightbox-src="assets/wechat-guide/step5-publish-draft.svg" data-lightbox-caption="第 5 步：推送微信草稿箱并完成配图防丢校验">
+                <img src="assets/wechat-guide/step5-publish-draft.svg" alt="一键发布到公众号草稿箱图示" width="1200" height="675" />
+              </div>
+              <figcaption class="shot-cap">
+                <span>推送后直接在微信公众平台草稿箱群发即可</span>
+                <span>点击图片可全屏放大</span>
+              </figcaption>
+            </figure>
+          </div>
+        </section>
+
+        <!-- 03 6 平台视频矩阵接入 -->
+        <section class="doc-section" id="video">
+          <div class="sec-head">
+            <span class="sec-badge is-orange">STEP 03</span>
+            <h2>6 大视频平台矩阵接入与规格</h2>
+          </div>
+          <p class="sec-lead">进入工作台「视频矩阵发布」，通过各平台官方创作者中心连接账号后，即可一次上传视频与双封面，并行定时发往以下 6 个平台（发布本身 0 积分）。</p>
+
+          <div class="grid-3" style="margin-bottom:18px;">
+            <div class="mini-card">
+              <strong><span class="step-num">1</span>选择发布平台</strong>
+              <p>勾选本次要同步排期的账号，支持拖拽调整常用平台顺序。</p>
+            </div>
+            <div class="mini-card">
+              <strong><span class="step-num">2</span>传视频与双封面</strong>
+              <p>一次上传自动适配横屏 16:9 与竖屏 3:4 封面，实时按平台校验标题字数。</p>
+            </div>
+            <div class="mini-card">
+              <strong><span class="step-num">3</span>原生定时排期</strong>
+              <p>统一设定时时间与原创声明，全链路走各平台官方原生发布通道。</p>
+            </div>
+          </div>
+
+          <div class="grid-3 plat-grid-m">
+            <div class="plat-spec-card">
+              <div class="plat-spec-head">
+                <span class="plat-spec-title"><span class="p-badge is-dy" style="width:24px;height:24px;"><svg><use href="#ico-dy"/></svg></span>抖音</span>
+                <span class="spec-tag">0 积分</span>
+              </div>
+              <div class="plat-spec-meta">标题上限 30 字 · 支持 3:4 竖封面与定时发布</div>
+            </div>
+            <div class="plat-spec-card">
+              <div class="plat-spec-head">
+                <span class="plat-spec-title"><span class="p-badge is-xhs" style="width:24px;height:24px;"><svg><use href="#ico-xhs"/></svg></span>小红书</span>
+                <span class="spec-tag">0 积分</span>
+              </div>
+              <div class="plat-spec-meta">标题上限 20 字 · 支持竖版封面、话题标签与定时</div>
+            </div>
+            <div class="plat-spec-card">
+              <div class="plat-spec-head">
+                <span class="plat-spec-title"><span class="p-badge is-ch" style="width:24px;height:24px;"><svg><use href="#ico-ch"/></svg></span>微信视频号</span>
+                <span class="spec-tag">0 积分</span>
+              </div>
+              <div class="plat-spec-meta">短标题 16 字 · 支持原创声明、合集选择与定时</div>
+            </div>
+            <div class="plat-spec-card">
+              <div class="plat-spec-head">
+                <span class="plat-spec-title"><span class="p-badge is-bl" style="width:24px;height:24px;"><svg><use href="#ico-bl"/></svg></span>哔哩哔哩</span>
+                <span class="spec-tag">0 积分</span>
+              </div>
+              <div class="plat-spec-meta">标题上限 80 字 · 支持 16:9 横封面与分区标签</div>
+            </div>
+            <div class="plat-spec-card">
+              <div class="plat-spec-head">
+                <span class="plat-spec-title"><span class="p-badge is-yt" style="width:24px;height:24px;"><svg><use href="#ico-yt"/></svg></span>YouTube</span>
+                <span class="spec-tag">0 积分</span>
+              </div>
+              <div class="plat-spec-meta">标题上限 100 字符 · 兼容横屏长视频与 Shorts 定时</div>
+            </div>
+            <div class="plat-spec-card">
+              <div class="plat-spec-head">
+                <span class="plat-spec-title"><span class="p-badge is-x" style="width:24px;height:24px;"><svg><use href="#ico-x"/></svg></span>X / Twitter</span>
+                <span class="spec-tag">0 积分</span>
+              </div>
+              <div class="plat-spec-meta">正文上限 280 字符 · 支持视频分发与定时排期</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 04 透明积分规则 -->
+        <section class="doc-section" id="credits">
+          <div class="sec-head">
+            <span class="sec-badge">STEP 04</span>
+            <h2>透明积分规则与免费权益明细</h2>
+          </div>
+          <p class="sec-lead">每次扣分前都有明确确认弹窗；任务因任何原因失败，预扣积分自动全额退回。同一作品 7 天内复看已拆解报告与逐字稿免扣分。</p>
+
+          <div class="grid-2" style="margin-bottom:14px;">
+            <div class="mini-card">
+              <strong>会员全站 0 积分能力</strong>
+              <p>公共超爆选题库浏览与导出、6 大视频平台无限次定时发布、公众号排版与直推草稿箱、我的选题管理均为 0 积分。</p>
+            </div>
+            <div class="mini-card">
+              <strong>失败退分与 7 天复看保障</strong>
+              <p>年度会员每月 1,600 分 + 开卡立赠 800 分（全年共 20,000 分）；支持按需加购 365 天有效积分加油包。</p>
+            </div>
+          </div>
+
+          <div class="table-wrap">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>功能模块</th>
+                  <th>具体操作</th>
+                  <th style="width:120px;">积分消耗</th>
+                  <th>说明</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>全站发布与素材浏览</td>
+                  <td>视频矩阵 6 平台定时 / 公众号直推草稿箱 / 选题浏览</td>
+                  <td><span class="pts-pill is-free">0 积分</span></td>
+                  <td>会员期内不限次数使用</td>
+                </tr>
+                <tr>
+                  <td>短视频文案优化</td>
+                  <td>口播文案过审检测 / 爆款预估单项提分</td>
+                  <td><span class="pts-pill">2 积分 / 次</span></td>
+                  <td>扫描违禁极限词与导流风险，按项计费</td>
+                </tr>
+                <tr>
+                  <td>短视频口播改写</td>
+                  <td>短视频口播 AI 改写</td>
+                  <td><span class="pts-pill">6 积分 / 次</span></td>
+                  <td>生成贴合口播节奏的新稿版本</td>
+                </tr>
+                <tr>
+                  <td>单视频拆解与评论</td>
+                  <td>单条评论深度分析 / 单视频精读拆解与新稿</td>
+                  <td><span class="pts-pill">6 – 8 积分</span></td>
+                  <td>评论深度分析 6 分；精读与结构新稿 8 分</td>
+                </tr>
+                <tr>
+                  <td>真实逐字稿提取</td>
+                  <td>单视频真实逐字稿提取（高精语音转写）</td>
+                  <td><span class="pts-pill">20 积分 / 条</span></td>
+                  <td>失败自动退回；7 天内同一视频复看 0 积分</td>
+                </tr>
+                <tr>
+                  <td>公众号画布 AI 环节</td>
+                  <td>AI 人味改写（8 分）/ 智能排版（6 分）/ 标题（4 分）</td>
+                  <td><span class="pts-pill">4 – 8 积分</span></td>
+                  <td>手动粘贴排好版直接推送草稿箱 0 积分</td>
+                </tr>
+                <tr>
+                  <td>公众号 AI 配图生成</td>
+                  <td>正文插图（4 分/张）/ 封面真实生图 3 张（12 分）</td>
+                  <td><span class="pts-pill">4 – 12 积分</span></td>
+                  <td>可预览后再决定是否写入正文或封面</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- 05 常见报错排查 -->
+        <section class="doc-section" id="troubleshoot">
+          <div class="sec-head">
+            <span class="sec-badge">STEP 05</span>
+            <h2>常见报错与 30 秒快速排查</h2>
+          </div>
+          <p class="sec-lead">遇到「测试联通」或「推送草稿箱」报错时，先对照下面 5 类高频原因处理即可恢复。</p>
+
+          <div class="table-wrap">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th style="width:120px;">报错码 / 提示</th>
+                  <th style="width:200px;">常见原因</th>
+                  <th>解决办法</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><span class="err-code">40164</span></td>
+                  <td>出口 IP 未加入公众号白名单</td>
+                  <td>在微信公众平台「安全中心 → IP 白名单」补充当前公网 IP，管理员扫码确认后等待 20 秒重试「测试联通」。</td>
+                </tr>
+                <tr>
+                  <td><span class="err-code">40125</span></td>
+                  <td>AppSecret 错误或已重置</td>
+                  <td>核对复制时是否多出前后空格；若记不清旧密钥，在开发者平台重置 AppSecret 后同步更新到工作台配置。</td>
+                </tr>
+                <tr>
+                  <td><span class="err-code">40013</span></td>
+                  <td>AppID 格式无效</td>
+                  <td>确认以 <code>wx</code> 开头且为公众号的开发者 ID（不要错填成小程序 AppID 或微信号）。</td>
+                </tr>
+                <tr>
+                  <td><span class="err-code">45009</span></td>
+                  <td>当日微信接口调用达上限</td>
+                  <td>避免短时间连续高频重复测试联通；若已达微信配额上限，次日零点后会自动恢复。</td>
+                </tr>
+                <tr>
+                  <td><span class="err-code">图片体积超限</span></td>
+                  <td>单张正文配图超过微信限制</td>
+                  <td>微信限制正文单图不超过 1MB（GIF 2MB）、封面不超过 10MB，在编辑器内使用工作台自动压缩或 AI 生图即可。</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- 底部行动卡片 -->
+        <div class="bottom-cta">
+          <h3>准备好了？现在去工作台开启试用</h3>
+          <p>支持绑卡开启免费试用，试用期内随时取消；公众号排版推送与 6 平台定时发布全部 0 积分。</p>
+          <div class="bottom-cta-acts">
+            <a class="btn btn-primary" href="/#/register">开始免费试用 →</a>
+            <a class="btn btn-outline" href="intro.html">返回产品介绍页</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div>© 2026 明日之星（laowangba.com）</div>
+      <div class="footer-links">
+        <a href="intro.html">产品首页</a>
+        <a href="intro.html#pricing">价格方案</a>
+        <a href="/#/wechat-publish">进入工作台</a>
+        <a href="https://x.com/laowangbabababa" target="_blank" rel="noopener noreferrer">老王的推特 ↗</a>
+        <a href="/privacy.html">隐私政策</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- 高清图示放大灯箱 -->
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="放大查看步骤图示">
+    <div class="lightbox-inner">
+      <img id="lightboxImg" alt="步骤图示放大预览" />
+      <div class="lightbox-bar">
+        <span id="lightboxCap"></span>
+        <button type="button" class="lightbox-close" id="lightboxClose">关闭 ×</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (() => {
+      // 1. 目录滚动联动高亮（桌面左侧目录 + 移动顶部横向条）
+      const desktopLinks = [...document.querySelectorAll('#tocList .toc-link')];
+      const mobileChips = [...document.querySelectorAll('#mobileToc .m-toc-chip')];
+      const allSections = desktopLinks
+        .map((a) => document.querySelector(a.getAttribute('href')))
+        .filter(Boolean);
+
+      const setActive = (id) => {
+        desktopLinks.forEach((a) => a.classList.toggle('is-active', a.getAttribute('href') === `#${id}`));
+        const activeChip = mobileChips.find((c) => c.getAttribute('href') === `#${id}`);
+        mobileChips.forEach((c) => c.classList.toggle('is-active', c === activeChip));
+        const bar = document.getElementById('mobileToc');
+        if (bar && activeChip && bar.scrollWidth > bar.clientWidth) {
+          const left = activeChip.offsetLeft - (bar.clientWidth - activeChip.offsetWidth) / 2;
+          bar.scrollTo({ left: Math.max(0, left), behavior: 'smooth' });
+        }
+      };
+
+      if ('IntersectionObserver' in window && allSections.length) {
+        const io = new IntersectionObserver((entries) => {
+          const vis = entries.filter((e) => e.isIntersecting).sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+          if (vis[0]?.target?.id) setActive(vis[0].target.id);
+        }, { rootMargin: '-18% 0px -64% 0px', threshold: 0.01 });
+        allSections.forEach((s) => io.observe(s));
+      }
+
+      // 2. 图示灯箱预览
+      const lb = document.getElementById('lightbox');
+      const lbImg = document.getElementById('lightboxImg');
+      const lbCap = document.getElementById('lightboxCap');
+      const closeLb = () => { lb?.classList.remove('is-open'); lbImg?.removeAttribute('src'); };
+      document.querySelectorAll('[data-lightbox-src]').forEach((el) => {
+        el.addEventListener('click', () => {
+          if (!lb || !lbImg) return;
+          lbImg.src = el.getAttribute('data-lightbox-src') || '';
+          if (lbCap) lbCap.textContent = el.getAttribute('data-lightbox-caption') || '';
+          lb.classList.add('is-open');
+        });
+      });
+      document.getElementById('lightboxClose')?.addEventListener('click', closeLb);
+      lb?.addEventListener('click', (e) => { if (e.target === lb) closeLb(); });
+      document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && lb?.classList.contains('is-open')) closeLb(); });
+
+      // 3. GitHub Pages 静态预览下自动将站内工作台路由指向正式域名
+      if (location.hostname.endsWith('github.io')) {
+        document.querySelectorAll('a[href^="/"]:not([href^="//"])').forEach((a) => {
+          const h = a.getAttribute('href');
+          a.setAttribute('href', `https://laowangba.com${h}`);
+          a.setAttribute('target', '_blank');
+          a.setAttribute('rel', 'noopener noreferrer');
+        });
+      }
+    })();
+  </script>
+</body>
+</html>

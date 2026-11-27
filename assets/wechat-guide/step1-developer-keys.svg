@@ -1,0 +1,101 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" width="1200" height="675">
+  <defs>
+    <style>
+      .f { font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", -apple-system, sans-serif; }
+      .m { font-family: "SF Mono", "Menlo", "Monaco", ui-monospace, monospace; }
+    </style>
+    <linearGradient id="bg1" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#EEF2F7"/>
+      <stop offset="100%" stop-color="#E2E8F0"/>
+    </linearGradient>
+    <filter id="winSh" x="-6%" y="-6%" width="112%" height="118%">
+      <feDropShadow dx="0" dy="16" stdDeviation="22" flood-color="#0F172A" flood-opacity="0.14"/>
+    </filter>
+    <filter id="subSh" x="-6%" y="-6%" width="112%" height="118%">
+      <feDropShadow dx="0" dy="6" stdDeviation="12" flood-color="#0F172A" flood-opacity="0.06"/>
+    </filter>
+  </defs>
+
+  <!-- 外层画布 -->
+  <rect width="1200" height="675" fill="url(#bg1)"/>
+
+  <!-- 精致浏览器窗口 -->
+  <g filter="url(#winSh)">
+    <rect x="44" y="34" width="1112" height="607" rx="18" fill="#FFFFFF"/>
+    <!-- 浏览器顶栏 -->
+    <path d="M62 34 H1138 A18 18 0 0 1 1156 52 V82 H44 V52 A18 18 0 0 1 62 34 Z" fill="#F1F5F9"/>
+    <line x1="44" y1="82" x2="1156" y2="82" stroke="#E2E8F0" stroke-width="1"/>
+    <circle cx="74" cy="58" r="6" fill="#FF5F56"/>
+    <circle cx="94" cy="58" r="6" fill="#FFBD2E"/>
+    <circle cx="114" cy="58" r="6" fill="#27C93F"/>
+    <rect x="310" y="44" width="580" height="28" rx="14" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
+    <text x="600" y="63" text-anchor="middle" class="m" font-size="12.5" fill="#475569">🔒 https://developers.weixin.qq.com/platform</text>
+
+    <!-- 平台顶部导航 -->
+    <rect x="44" y="82" width="1112" height="54" fill="#FFFFFF"/>
+    <line x1="44" y1="136" x2="1156" y2="136" stroke="#EEF2F6" stroke-width="1"/>
+    <rect x="70" y="96" width="26" height="26" rx="7" fill="#07C160"/>
+    <circle cx="79" cy="107" r="3" fill="#FFFFFF"/>
+    <circle cx="87" cy="111" r="2.6" fill="#FFFFFF"/>
+    <text x="106" y="115" class="f" font-size="16.5" font-weight="700" fill="#0F172A">微信开发者平台</text>
+    <rect x="234" y="99" width="76" height="22" rx="11" fill="#ECFDF5"/>
+    <text x="272" y="114" text-anchor="middle" class="f" font-size="11.5" font-weight="600" fill="#059669">公众号开发</text>
+    <rect x="1018" y="96" width="112" height="26" rx="13" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="1"/>
+    <circle cx="1034" cy="109" r="5" fill="#07C160"/>
+    <text x="1082" y="114" text-anchor="middle" class="f" font-size="12" font-weight="600" fill="#334155">管理员已扫码</text>
+
+    <!-- 左侧菜单 -->
+    <rect x="44" y="136" width="224" height="505" fill="#FAFBFD"/>
+    <line x1="268" y1="136" x2="268" y2="641" stroke="#EEF2F6" stroke-width="1"/>
+    <g class="f" font-size="14" fill="#475569">
+      <text x="76" y="178">工作台概览</text>
+      <text x="76" y="220">我的业务 · 公众号</text>
+      <rect x="58" y="238" width="196" height="42" rx="10" fill="#ECFDF5"/>
+      <rect x="58" y="245" width="4" height="28" rx="2" fill="#07C160"/>
+      <text x="76" y="264" font-weight="700" fill="#059669">开发密钥（基本配置）</text>
+      <text x="76" y="308">安全中心 · IP 白名单</text>
+      <text x="76" y="350">接口权限管理</text>
+      <text x="76" y="392">开发者工具</text>
+    </g>
+
+    <!-- 右侧主内容区 -->
+    <rect x="268" y="136" width="888" height="505" fill="#F8FAFC"/>
+    <text x="304" y="178" class="f" font-size="20" font-weight="700" fill="#0F172A">公众号开发信息与密钥</text>
+    <text x="304" y="202" class="f" font-size="12.5" fill="#64748B">获取下方 AppID 与 AppSecret 后，填入明日之星工作台即可直连微信官方草稿箱接口</text>
+
+    <!-- 密钥主白卡 -->
+    <rect x="304" y="222" width="816" height="384" rx="16" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1" filter="url(#subSh)"/>
+
+    <!-- 红框 1：AppID -->
+    <rect x="332" y="252" width="760" height="92" rx="12" fill="#FFFBFB" stroke="#EF4444" stroke-width="2.4" stroke-dasharray="7 4"/>
+    <circle cx="332" cy="252" r="15" fill="#EF4444"/>
+    <text x="332" y="257" text-anchor="middle" class="f" font-size="13.5" font-weight="700" fill="#FFFFFF">1</text>
+    <text x="360" y="288" class="f" font-size="15.5" font-weight="700" fill="#0F172A">开发者 ID（AppID）</text>
+    <text x="360" y="314" class="f" font-size="12.5" fill="#64748B">公众号开发唯一识别码，固定以 wx 开头</text>
+    <rect x="616" y="276" width="230" height="38" rx="8" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="1"/>
+    <text x="632" y="300" class="m" font-size="14.5" font-weight="700" fill="#0F172A">wx8a9c7d2e4f1b6a09</text>
+    <rect x="862" y="276" width="84" height="38" rx="8" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.2"/>
+    <text x="904" y="300" text-anchor="middle" class="f" font-size="13.5" font-weight="600" fill="#0F172A">复制</text>
+    <rect x="960" y="281" width="114" height="28" rx="14" fill="#FEF2F2" stroke="#FECACA" stroke-width="1"/>
+    <text x="1017" y="300" text-anchor="middle" class="f" font-size="12" font-weight="700" fill="#DC2626">① 复制 AppID</text>
+
+    <!-- 红框 2：AppSecret -->
+    <rect x="332" y="368" width="760" height="92" rx="12" fill="#FFFBFB" stroke="#EF4444" stroke-width="2.4" stroke-dasharray="7 4"/>
+    <circle cx="332" cy="368" r="15" fill="#EF4444"/>
+    <text x="332" y="373" text-anchor="middle" class="f" font-size="13.5" font-weight="700" fill="#FFFFFF">2</text>
+    <text x="360" y="404" class="f" font-size="15.5" font-weight="700" fill="#0F172A">开发者密码（AppSecret）</text>
+    <text x="360" y="430" class="f" font-size="12.5" fill="#64748B">校验接口权限的 32 位密钥，扫码验证后立即复制保存</text>
+    <rect x="616" y="392" width="206" height="38" rx="8" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="1"/>
+    <text x="632" y="417" class="m" font-size="16" fill="#475569">••••••••••••••••••••</text>
+    <rect x="838" y="392" width="108" height="38" rx="8" fill="#07C160"/>
+    <text x="892" y="416" text-anchor="middle" class="f" font-size="13.5" font-weight="700" fill="#FFFFFF">重置 / 复制</text>
+    <rect x="960" y="397" width="114" height="28" rx="14" fill="#FEF2F2" stroke="#FECACA" stroke-width="1"/>
+    <text x="1017" y="416" text-anchor="middle" class="f" font-size="12" font-weight="700" fill="#DC2626">② 扫码取密钥</text>
+
+    <!-- 底部提示卡 -->
+    <rect x="332" y="486" width="760" height="92" rx="12" fill="#ECFDF5" stroke="#A7F3D0" stroke-width="1"/>
+    <text x="356" y="518" class="f" font-size="13.5" font-weight="700" fill="#065F46">💡 旧版公众平台（mp.weixin.qq.com）同样可用</text>
+    <text x="356" y="544" class="f" font-size="13" fill="#047857">在左侧菜单点击「设置与开发 → 基本配置」，即可看到相同的 AppID 与 AppSecret；</text>
+    <text x="356" y="566" class="f" font-size="13" fill="#047857">微信官方不保留明文密码，复制后请立即填入工作台保存。</text>
+  </g>
+</svg>

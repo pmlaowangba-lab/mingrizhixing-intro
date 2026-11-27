@@ -1,0 +1,104 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" width="1200" height="675">
+  <defs>
+    <style>
+      .f { font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", -apple-system, sans-serif; }
+      .m { font-family: "SF Mono", "Menlo", "Monaco", ui-monospace, monospace; }
+    </style>
+    <linearGradient id="bg2" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#EEF2F7"/>
+      <stop offset="100%" stop-color="#E2E8F0"/>
+    </linearGradient>
+    <filter id="winSh2" x="-6%" y="-6%" width="112%" height="118%">
+      <feDropShadow dx="0" dy="16" stdDeviation="22" flood-color="#0F172A" flood-opacity="0.14"/>
+    </filter>
+    <filter id="subSh2" x="-6%" y="-6%" width="112%" height="118%">
+      <feDropShadow dx="0" dy="6" stdDeviation="12" flood-color="#0F172A" flood-opacity="0.06"/>
+    </filter>
+  </defs>
+
+  <rect width="1200" height="675" fill="url(#bg2)"/>
+
+  <!-- 浏览器主窗口 -->
+  <g filter="url(#winSh2)">
+    <rect x="44" y="32" width="1112" height="611" rx="18" fill="#FFFFFF"/>
+    <path d="M62 32 H1138 A18 18 0 0 1 1156 50 V80 H44 V50 A18 18 0 0 1 62 32 Z" fill="#F1F5F9"/>
+    <line x1="44" y1="80" x2="1156" y2="80" stroke="#E2E8F0" stroke-width="1"/>
+    <circle cx="74" cy="56" r="6" fill="#FF5F56"/>
+    <circle cx="94" cy="56" r="6" fill="#FFBD2E"/>
+    <circle cx="114" cy="56" r="6" fill="#27C93F"/>
+    <rect x="330" y="42" width="540" height="28" rx="14" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
+    <text x="600" y="61" text-anchor="middle" class="m" font-size="12.5" fill="#475569">🔒 https://mp.weixin.qq.com · 设置与开发 / 安全中心</text>
+
+    <!-- 左侧微信公众平台菜单 -->
+    <rect x="44" y="80" width="230" height="563" fill="#FFFFFF"/>
+    <line x1="274" y1="80" x2="274" y2="643" stroke="#EEF2F6" stroke-width="1"/>
+    <circle cx="80" cy="114" r="13" fill="#07C160"/>
+    <text x="102" y="120" class="f" font-size="17" font-weight="700" fill="#0F172A">公众号</text>
+
+    <g class="f" font-size="14" fill="#475569">
+      <text x="72" y="164">首页</text>
+      <text x="72" y="204">内容管理</text>
+      <text x="72" y="244">互动管理</text>
+      <text x="72" y="284">数据分析</text>
+      <text x="72" y="330" font-weight="700" fill="#0F172A">⚙ 设置与开发  ⌃</text>
+      <text x="90" y="368" font-size="13.5" fill="#64748B">账号设置</text>
+      <text x="90" y="402" font-size="13.5" fill="#64748B">人员设置</text>
+    </g>
+
+    <!-- 红框 1：左侧安全中心 -->
+    <rect x="60" y="418" width="198" height="40" rx="9" fill="#ECFDF5" stroke="#EF4444" stroke-width="2.4"/>
+    <circle cx="60" cy="418" r="14" fill="#EF4444"/>
+    <text x="60" y="423" text-anchor="middle" class="f" font-size="12.5" font-weight="700" fill="#FFFFFF">1</text>
+    <text x="90" y="443" class="f" font-size="14" font-weight="700" fill="#07C160">安全中心</text>
+
+    <g class="f" font-size="13.5" fill="#64748B">
+      <text x="90" y="484">违规记录</text>
+      <text x="90" y="518">开发接口管理</text>
+    </g>
+
+    <!-- 右侧内容区 -->
+    <rect x="274" y="80" width="882" height="563" fill="#F8FAFC"/>
+    <text x="310" y="122" class="f" font-size="20" font-weight="700" fill="#0F172A">安全中心 · IP 白名单配置</text>
+
+    <!-- 主白卡 -->
+    <rect x="310" y="142" width="812" height="476" rx="16" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1" filter="url(#subSh2)"/>
+    <text x="342" y="178" class="f" font-size="14" font-weight="600" fill="#334155">风险操作保护</text>
+    <text x="342" y="200" class="f" font-size="12.5" fill="#94A3B8">你的账号已开启风险操作微信保护，修改白名单时需管理员扫码确认</text>
+    <line x1="342" y1="216" x2="1090" y2="216" stroke="#F1F5F9" stroke-width="1"/>
+
+    <!-- 红框 2：IP 白名单 -->
+    <rect x="336" y="232" width="760" height="232" rx="14" fill="#FFFDFD" stroke="#EF4444" stroke-width="2.4"/>
+    <circle cx="336" cy="232" r="15" fill="#EF4444"/>
+    <text x="336" y="237" text-anchor="middle" class="f" font-size="13" font-weight="700" fill="#FFFFFF">2</text>
+
+    <text x="364" y="266" class="f" font-size="15.5" font-weight="700" fill="#0F172A">IP 白名单</text>
+    <rect x="448" y="248" width="166" height="24" rx="12" fill="#FEF2F2" stroke="#FECACA" stroke-width="1"/>
+    <text x="531" y="264" text-anchor="middle" class="f" font-size="11.5" font-weight="700" fill="#DC2626">点「修改」填入公网 IP</text>
+
+    <rect x="364" y="282" width="704" height="106" rx="10" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.2"/>
+    <text x="384" y="314" class="m" font-size="16" font-weight="700" fill="#0F172A">xxx.xxx.xxx.xxx</text>
+    <text x="546" y="314" class="f" font-size="12.5" fill="#64748B">← 填入下方查询到的当前公网 IP</text>
+    <text x="384" y="346" class="m" font-size="15" font-weight="600" fill="#059669">你的本机公网 IP（如 112.96.xx.xx）</text>
+    <text x="694" y="346" class="f" font-size="12.5" fill="#64748B">← 本机使用时换行追加</text>
+    <text x="384" y="374" class="f" font-size="12" fill="#94A3B8">每行填写一个 IP 地址，支持同时填写多个</text>
+
+    <!-- 确认保存按钮（红标 3） -->
+    <rect x="944" y="404" width="124" height="42" rx="9" fill="#07C160"/>
+    <text x="1006" y="430" text-anchor="middle" class="f" font-size="14" font-weight="700" fill="#FFFFFF">确认保存</text>
+    <circle cx="1068" cy="404" r="14" fill="#EF4444"/>
+    <text x="1068" y="409" text-anchor="middle" class="f" font-size="12.5" font-weight="700" fill="#FFFFFF">3</text>
+    <text x="928" y="430" text-anchor="end" class="f" font-size="12.5" fill="#64748B">保存并扫码确认 →</text>
+
+    <!-- 底部醒目本机 IP 查询指引条 -->
+    <rect x="336" y="482" width="760" height="114" rx="14" fill="#ECFDF5" stroke="#6EE7B7" stroke-width="1.5"/>
+    <text x="362" y="512" class="f" font-size="14.5" font-weight="700" fill="#065F46">🔎 不知道自己的本机公网 IP？新标签打开以下任意网址即可一键查看：</text>
+
+    <rect x="362" y="526" width="342" height="52" rx="10" fill="#FFFFFF" stroke="#A7F3D0" stroke-width="1.2"/>
+    <text x="380" y="547" class="f" font-size="11.5" font-weight="600" fill="#64748B">国内直连推荐（打开即显本机 IP）：</text>
+    <text x="380" y="568" class="m" font-size="14" font-weight="700" fill="#047857">https://www.ip138.com</text>
+
+    <rect x="722" y="526" width="348" height="52" rx="10" fill="#FFFFFF" stroke="#A7F3D0" stroke-width="1.2"/>
+    <text x="740" y="547" class="f" font-size="11.5" font-weight="600" fill="#64748B">极简备用查询（打开即显纯 IP）：</text>
+    <text x="740" y="568" class="m" font-size="14" font-weight="700" fill="#047857">https://ip.sb</text>
+  </g>
+</svg>

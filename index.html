@@ -1365,6 +1365,7 @@
       transition: opacity 280ms ease;
     }
     .stat-card:hover::before, .price-card:hover::before, .review-card:hover::before, .platform-tile:hover::before { opacity: 1; }
+    .stat-card > *, .price-card > *, .review-card > *, .platform-tile > * { position: relative; z-index: 1; }
     .stat-card { background: linear-gradient(180deg, #ffffff, #fbfcfd); box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04), 0 12px 30px -22px rgba(15, 23, 42, 0.18); }
     .stat-card::after { content: ""; position: absolute; left: 18%; right: 18%; top: 0; height: 1px; background: linear-gradient(90deg, transparent, rgba(234, 88, 12, 0.55), transparent); }
     .stat-num span { background: linear-gradient(180deg, #fb7a24, #c2410c); -webkit-background-clip: text; background-clip: text; color: transparent; }
@@ -1394,10 +1395,23 @@
       mask-image: radial-gradient(ellipse 60% 80% at 50% 0%, #000, transparent 75%);
     }
 
-    /* 定价轮播指示点（移动端显示） */
+    /* 定价轮播指示点（移动端显示）与接入引导条 */
     .pricing-dots { display: none; justify-content: center; gap: 6px; margin-top: 4px; }
-    .pricing-dots i { width: 6px; height: 6px; border-radius: 3px; background: #cbd5e1; transition: width 260ms var(--ease), background 260ms ease; }
-    .pricing-dots i.is-on { width: 20px; background: var(--accent); }
+    .pricing-dots i { width: 8px; height: 8px; border-radius: 4px; background: #cbd5e1; cursor: pointer; transition: width 260ms var(--ease), background 260ms ease; }
+    .pricing-dots i.is-on { width: 22px; background: var(--accent); }
+    .pricing-help-bar {
+      margin-top: 14px;
+      padding: 16px 24px;
+      border-radius: 14px;
+      background: #ffffff;
+      border: 1px solid var(--line-strong);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+    .pricing-help-acts { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
 
     @media (max-width: 980px) {
       .nav-menu { display: none; }
@@ -1552,6 +1566,9 @@
       .price-card { padding: 24px 18px; border-radius: 18px; gap: 18px; }
       .price-val { font-size: 38px; }
       .estimator-bar { padding: 16px; gap: 12px; justify-content: center; text-align: center; }
+      .pricing-help-bar { padding: 16px; justify-content: center; text-align: center; }
+      .pricing-help-acts { width: 100%; justify-content: center; }
+      .pricing-help-acts .btn { flex: 1 1 auto; }
 
       .faq-section { padding: 48px 0; }
       .faq-q { padding: 17px 2px; font-size: 15px; }
@@ -1645,6 +1662,7 @@
         <a class="nav-link" href="#demo">产品演示</a>
         <a class="nav-link" href="#platforms">支持平台</a>
         <a class="nav-link" href="#pricing">价格方案</a>
+        <a class="nav-link" href="guide.html">接入流程</a>
         <a class="nav-link" href="#faq">常见问题</a>
       </nav>
 
@@ -2429,7 +2447,7 @@
             <p>贴入抖音、小红书或 B 站视频链接，稳定交付原片逐字稿、黄金 3 秒钩子分析、同类复用建议与高赞评论痛点洞察，并直接生成可直接开拍的新口播稿。</p>
             <div class="feature-actions">
               <a class="btn btn-primary" href="/#/register">免费试用 →</a>
-              <a class="btn btn-outline" href="#pricing">查看积分规则</a>
+              <a class="btn btn-outline" href="guide.html#credits">查看积分规则</a>
             </div>
           </div>
 
@@ -2484,7 +2502,7 @@
             <p>贴入对标口播稿，自动拆解六点结构并融合评论区痛点，一键生成口语版、干货版、故事版 3 套新稿，同步给出爆款提分与过审检测，改完直接开拍。</p>
             <div class="feature-actions">
               <a class="btn btn-primary" href="/#/register">免费试用 →</a>
-              <a class="btn btn-outline" href="#pricing">查看积分规则</a>
+              <a class="btn btn-outline" href="guide.html#credits">查看积分规则</a>
             </div>
           </div>
 
@@ -2570,7 +2588,7 @@
             <p>从导入初稿、AI 去翻译腔改写、7 套原创排版、6 组高点击标题与 2.35:1 封面，到一键推送微信官方草稿箱并发布，一条流水线全程不断流，配图一张不丢。</p>
             <div class="feature-actions">
               <a class="btn btn-primary" href="/#/register">免费试用 →</a>
-              <a class="btn btn-outline" href="/wechat-setup-guide">查看接入指南</a>
+              <a class="btn btn-outline" href="guide.html#wechat">查看接入指南</a>
             </div>
           </div>
 
@@ -2783,6 +2801,9 @@
           <div class="platform-tile"><span class="p-badge is-ai" style="width:46px;height:46px;border-radius:13px;"><svg><use href="#ico-spark"/></svg></span><div><div class="platform-tile-name">热门 AI 资讯</div><div class="platform-tile-sub">实时热点与图文素材</div></div></div>
           <div class="platform-tile" style="border-style:dashed;background:var(--bg-soft);"><span style="font-size:24px;color:var(--ink-4);line-height:46px;">•••</span><div><div class="platform-tile-name" style="color:var(--ink-3);">更多平台持续接入</div><div class="platform-tile-sub">按创作者需求迭代</div></div></div>
         </div>
+        <div style="text-align:center;margin-top:26px;" data-reveal>
+          <a class="btn btn-outline" href="guide.html#video">查看 6 大平台完整接入流程 →</a>
+        </div>
       </div>
     </section>
 
@@ -2873,6 +2894,16 @@
             预计每月约需 <strong style="color:var(--accent-ink);font-family:var(--font-mono);">544 积分</strong> · 推荐 <strong style="color:var(--ink);">连续包月 / 年度会员</strong>
           </div>
         </div>
+
+        <div class="pricing-help-bar" data-reveal>
+          <div style="font-size:13.5px;color:var(--ink-2);">
+            <strong style="color:var(--ink);">想先确认怎么接公众号、连视频账号或看各项操作怎么扣分？</strong>
+          </div>
+          <div class="pricing-help-acts">
+            <a class="btn btn-outline btn-sm" href="guide.html">查看完整接入流程 →</a>
+            <a class="btn btn-outline btn-sm" href="guide.html#credits">查看透明积分明细 →</a>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -2946,7 +2977,7 @@
         <h4>快速入口</h4>
         <ul>
           <li><a href="/#/materials/xiaohongshu">进入工作台</a></li>
-          <li><a href="/#/membership">会员定价</a></li>
+          <li><a href="#pricing">会员定价</a></li>
           <li><a href="/#/login">账号登录</a></li>
           <li><a href="/#/register">免费试用</a></li>
         </ul>
@@ -2954,8 +2985,8 @@
       <div class="footer-col">
         <h4>文档与社区</h4>
         <ul>
-          <li><a href="/wechat-setup-guide">公众号接入</a></li>
-          <li><a href="/docs">帮助中心</a></li>
+          <li><a href="guide.html#wechat">公众号接入</a></li>
+          <li><a href="guide.html">接入流程与帮助</a></li>
           <li><a href="https://x.com/laowangbabababa" target="_blank" rel="noopener noreferrer">老王的推特 ↗</a></li>
           <li><a href="/privacy.html">隐私政策</a></li>
         </ul>
@@ -3685,6 +3716,11 @@
         if (pricingGrid.scrollWidth > pricingGrid.clientWidth + 4) {
           pricingGrid.scrollLeft = Math.max(0, centerOf(cards[cards.length - 1]));
         }
+        pricingDots.forEach((dot, k) => {
+          dot.addEventListener('click', () => {
+            if (cards[k]) pricingGrid.scrollTo({ left: Math.max(0, centerOf(cards[k])), behavior: 'smooth' });
+          });
+        });
         pricingGrid.addEventListener('scroll', () => requestAnimationFrame(syncDots), { passive: true });
         syncDots();
       }

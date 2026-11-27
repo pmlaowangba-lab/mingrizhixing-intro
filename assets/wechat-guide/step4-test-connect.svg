@@ -1,0 +1,85 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" width="1200" height="675">
+  <defs>
+    <style>
+      .f { font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", -apple-system, sans-serif; }
+    </style>
+    <linearGradient id="bg4" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#F1F5F9"/>
+      <stop offset="100%" stop-color="#E2E8F0"/>
+    </linearGradient>
+    <linearGradient id="topGreen" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#07C160"/>
+      <stop offset="60%" stop-color="#34D399"/>
+      <stop offset="100%" stop-color="#A7F3D0"/>
+    </linearGradient>
+    <filter id="cSh4" x="-6%" y="-6%" width="112%" height="120%">
+      <feDropShadow dx="0" dy="18" stdDeviation="24" flood-color="#0F172A" flood-opacity="0.12"/>
+    </filter>
+  </defs>
+
+  <rect width="1200" height="675" fill="url(#bg4)"/>
+
+  <!-- 居中精工引导卡片 -->
+  <g filter="url(#cSh4)">
+    <rect x="64" y="122" width="1072" height="432" rx="22" fill="#FFFFFF" stroke="#86EFAC" stroke-width="1.5"/>
+    <path d="M86 122 H1114 A22 22 0 0 1 1136 144 V127 H64 V144 A22 22 0 0 1 86 122 Z" fill="url(#topGreen)"/>
+
+    <!-- 卡片头部 -->
+    <rect x="98" y="158" width="34" height="34" rx="10" fill="#ECFDF5" stroke="#A7F3D0" stroke-width="1"/>
+    <text x="115" y="181" text-anchor="middle" class="f" font-size="16" font-weight="700" fill="#07C160">✓</text>
+    <text x="146" y="182" class="f" font-size="20" font-weight="700" fill="#0F172A">公众号发布接入</text>
+    <rect x="304" y="161" width="70" height="28" rx="14" fill="#ECFDF5" stroke="#A7F3D0" stroke-width="1"/>
+    <text x="339" y="180" text-anchor="middle" class="f" font-size="13" font-weight="700" fill="#059669">已联通</text>
+
+    <!-- 右上角操作组 -->
+    <rect x="854" y="157" width="150" height="36" rx="10" fill="#ECFDF5" stroke="#A7F3D0" stroke-width="1"/>
+    <text x="929" y="180" text-anchor="middle" class="f" font-size="13" font-weight="600" fill="#047857">📖 接入图文教程 ↗</text>
+    <rect x="1016" y="157" width="84" height="36" rx="10" fill="#F0FDF4" stroke="#86EFAC" stroke-width="1"/>
+    <text x="1058" y="180" text-anchor="middle" class="f" font-size="13" font-weight="700" fill="#059669">收起 ▴</text>
+
+    <!-- 步骤连接箭头 -->
+    <text x="431" y="366" text-anchor="middle" class="f" font-size="18" fill="#94A3B8">→</text>
+    <text x="769" y="366" text-anchor="middle" class="f" font-size="18" fill="#94A3B8">→</text>
+
+    <!-- 子卡 1 -->
+    <rect x="98" y="220" width="318" height="296" rx="16" fill="#FAFBFD" stroke="#E2E8F0" stroke-width="1.2"/>
+    <circle cx="132" cy="258" r="14" fill="#07C160"/>
+    <text x="132" y="263" text-anchor="middle" class="f" font-size="13.5" font-weight="700" fill="#FFFFFF">✓</text>
+    <text x="156" y="264" class="f" font-size="16" font-weight="700" fill="#0F172A">微信开发者平台取密钥</text>
+    <text x="118" y="308" class="f" font-size="13.5" fill="#475569">• 获取公众号 AppID 与 AppSecret</text>
+    <text x="118" y="338" class="f" font-size="13.5" fill="#475569">• 在安全中心配置 IP 白名单</text>
+    <rect x="118" y="454" width="144" height="38" rx="9" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.2"/>
+    <text x="190" y="478" text-anchor="middle" class="f" font-size="13" font-weight="600" fill="#334155">前往开发者平台 ↗</text>
+    <text x="394" y="478" text-anchor="end" class="f" font-size="13" font-weight="700" fill="#059669">已完成</text>
+
+    <!-- 子卡 2 -->
+    <rect x="441" y="220" width="318" height="296" rx="16" fill="#FAFBFD" stroke="#E2E8F0" stroke-width="1.2"/>
+    <circle cx="475" cy="258" r="14" fill="#07C160"/>
+    <text x="475" y="263" text-anchor="middle" class="f" font-size="13.5" font-weight="700" fill="#FFFFFF">✓</text>
+    <text x="499" y="264" class="f" font-size="16" font-weight="700" fill="#0F172A">填写公众号配置</text>
+    <text x="461" y="308" class="f" font-size="13.5" fill="#475569">• 填入名称、AppID 和 AppSecret</text>
+    <text x="461" y="338" class="f" font-size="13.5" fill="#475569">• 默认直连官方接口，无需代理</text>
+    <rect x="461" y="376" width="278" height="38" rx="9" fill="#ECFDF5" stroke="#A7F3D0" stroke-width="1"/>
+    <text x="477" y="400" class="f" font-size="13" font-weight="700" fill="#065F46">✓ 已绑定：我的AI效率笔记</text>
+    <rect x="461" y="454" width="98" height="38" rx="9" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.2"/>
+    <text x="510" y="478" text-anchor="middle" class="f" font-size="13" font-weight="600" fill="#334155">修改配置</text>
+    <text x="738" y="478" text-anchor="end" class="f" font-size="13" font-weight="700" fill="#059669">已绑定</text>
+
+    <!-- 子卡 3 -->
+    <rect x="784" y="220" width="318" height="296" rx="16" fill="#FFFFFF" stroke="#86EFAC" stroke-width="1.6"/>
+    <circle cx="818" cy="258" r="14" fill="#07C160"/>
+    <text x="818" y="263" text-anchor="middle" class="f" font-size="13.5" font-weight="700" fill="#FFFFFF">✓</text>
+    <text x="842" y="264" class="f" font-size="16" font-weight="700" fill="#0F172A">测试联通即可发布</text>
+    <text x="804" y="308" class="f" font-size="13.5" fill="#475569">• 点「测试联通」验证密钥与白名单</text>
+    <text x="804" y="338" class="f" font-size="13.5" fill="#475569">• 联通后可收起，画布一键推草稿</text>
+    <rect x="804" y="376" width="278" height="38" rx="9" fill="#ECFDF5" stroke="#6EE7B7" stroke-width="1"/>
+    <text x="820" y="400" class="f" font-size="13" font-weight="700" fill="#065F46">✓ 已联通，可点击右上角收起</text>
+
+    <!-- 红框高亮测试联通按钮 -->
+    <rect x="796" y="446" width="114" height="54" rx="12" fill="none" stroke="#EF4444" stroke-width="2.5"/>
+    <rect x="804" y="454" width="98" height="38" rx="9" fill="#0F172A"/>
+    <text x="853" y="478" text-anchor="middle" class="f" font-size="13.5" font-weight="700" fill="#FFFFFF">测试联通</text>
+    <rect x="920" y="457" width="164" height="32" rx="16" fill="#FEF2F2" stroke="#FECACA" stroke-width="1"/>
+    <text x="1002" y="478" text-anchor="middle" class="f" font-size="12.5" font-weight="700" fill="#DC2626">← 点此验证接口联通</text>
+  </g>
+</svg>
