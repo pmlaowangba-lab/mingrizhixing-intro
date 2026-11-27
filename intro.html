@@ -796,7 +796,7 @@
       width: 22px;
       height: 22px;
       pointer-events: none;
-      transition: left 680ms var(--ease), top 680ms var(--ease), transform 140ms ease;
+      transition: left 460ms var(--ease), top 460ms var(--ease), transform 120ms ease;
       filter: drop-shadow(0 4px 8px rgba(15, 23, 42, 0.28));
     }
     .sim-cursor.is-click { transform: scale(0.84); }
@@ -1241,9 +1241,184 @@
     [data-reveal] { opacity: 0; transform: translateY(18px); transition: opacity 600ms var(--ease), transform 600ms var(--ease); }
     [data-reveal].is-in { opacity: 1; transform: translateY(0); }
 
+
+    /* ================= 质感升级：收紧圆角 · 精细描边 · 光效动效 ================= */
+    @property --ang { syntax: '<angle>'; initial-value: 0deg; inherits: false; }
+    .btn { border-radius: 10px; letter-spacing: -0.005em; }
+    .btn-lg { border-radius: 12px; }
+    .btn-sm { border-radius: 9px; }
+    .btn-primary {
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(180deg, #fb7a24 0%, #ea580c 100%);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 0 0 1px rgba(194, 65, 12, 0.85), 0 10px 24px -10px rgba(234, 88, 12, 0.62);
+    }
+    .btn-primary:hover { background: linear-gradient(180deg, #f97316 0%, #dc4c07 100%); }
+    .btn-primary::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -70%;
+      width: 45%;
+      height: 100%;
+      background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.42), transparent);
+      transform: skewX(-20deg);
+      animation: btnShine 3.8s ease-in-out infinite;
+      pointer-events: none;
+    }
+    @keyframes btnShine { 0%, 62% { left: -70%; } 100% { left: 140%; } }
+    .btn-outline { box-shadow: 0 1px 2px rgba(15, 23, 42, 0.06), inset 0 -1px 0 rgba(15, 23, 42, 0.05); }
+    .btn-dark { background: linear-gradient(180deg, #1e293b, #0f172a); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14), 0 0 0 1px #0f172a, 0 8px 20px -10px rgba(15, 23, 42, 0.5); }
+    .nav-link { border-radius: 8px; }
+    .plat-dot { border-radius: 9px; }
+    .showcase-tabs { border-radius: 12px; padding: 4px; background: #f3f5f8; box-shadow: inset 0 1px 2px rgba(15, 23, 42, 0.05); }
+    .sc-tab { border-radius: 8px; }
+    .sc-tab.is-active { box-shadow: 0 1px 2px rgba(15, 23, 42, 0.08), 0 0 0 1px rgba(15, 23, 42, 0.07), 0 6px 14px -8px rgba(15, 23, 42, 0.22); }
+    .sc-tab-bar, .sc-tab-bar > i { border-radius: 2px; }
+    .wb-shell { border-radius: 14px; }
+    .stat-card, .review-card, .platform-tile { border-radius: 14px; }
+    .price-card { border-radius: 16px; }
+    .pro-stage, .cv-stage { border-radius: 16px; }
+    .pro-win { border-radius: 12px; }
+    .founder-card { border-radius: 18px; }
+    .final-cta-box { border-radius: 20px; }
+    .estimator-bar { border-radius: 14px; }
+    .billing-toggle { border-radius: 12px; }
+    .billing-btn { border-radius: 9px; }
+    .stepper { border-radius: 10px; }
+    .step-btn { border-radius: 7px; }
+    .save-tag, .popular-pill { border-radius: 6px; }
+    .feature-kicker-ico, .dd-ico { border-radius: 8px; }
+
+    /* Hero：细网格 + 流动极光背景 */
+    .hero { position: relative; isolation: isolate; overflow: hidden; }
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: -1px 0 0;
+      z-index: -2;
+      background-image:
+        linear-gradient(rgba(15, 23, 42, 0.055) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(15, 23, 42, 0.055) 1px, transparent 1px);
+      background-size: 44px 44px;
+      -webkit-mask-image: radial-gradient(ellipse 70% 62% at 50% 22%, #000 30%, transparent 78%);
+      mask-image: radial-gradient(ellipse 70% 62% at 50% 22%, #000 30%, transparent 78%);
+    }
+    .hero::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: -180px;
+      z-index: -1;
+      width: 980px;
+      height: 520px;
+      transform: translateX(-50%);
+      background:
+        radial-gradient(closest-side at 32% 52%, rgba(249, 115, 22, 0.20), transparent 70%),
+        radial-gradient(closest-side at 70% 44%, rgba(16, 185, 129, 0.13), transparent 70%),
+        radial-gradient(closest-side at 52% 70%, rgba(99, 102, 241, 0.10), transparent 70%);
+      filter: blur(20px);
+      animation: heroAurora 12s ease-in-out infinite alternate;
+      pointer-events: none;
+    }
+    @keyframes heroAurora {
+      0% { transform: translateX(-50%) translateY(0) scale(1); }
+      50% { transform: translateX(-46%) translateY(18px) scale(1.06); }
+      100% { transform: translateX(-54%) translateY(-6px) scale(0.98); }
+    }
+    .hero h1 { background: linear-gradient(180deg, #0f172a 30%, #334155 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .hero h1 .word-rotator { -webkit-text-fill-color: var(--accent); }
+    .plat-dot { animation: platFloat 4.2s ease-in-out infinite; }
+    .plat-dot:nth-child(2n) { animation-delay: -1.4s; }
+    .plat-dot:nth-child(3n) { animation-delay: -2.6s; }
+    @keyframes platFloat { 0%, 100% { translate: 0 0; } 50% { translate: 0 -4px; } }
+
+    /* 主舞台：3D 立体入场 + 底部光晕 */
+    .wb-scale, .showcase-section .wb-shell[data-reveal] { will-change: transform; }
+    #wbScale { position: relative; }
+    #wbScale[data-reveal] { transform: perspective(1600px) rotateX(9deg) translateY(36px) scale(0.97); transform-origin: 50% 0; transition: opacity 900ms var(--ease), transform 1100ms var(--ease); }
+    #wbScale[data-reveal].is-in { transform: perspective(1600px) rotateX(0) translateY(0) scale(1); }
+    .showcase-section { position: relative; }
+    .showcase-section::before {
+      content: "";
+      position: absolute;
+      left: 50%;
+      bottom: 10px;
+      width: min(1000px, 90%);
+      height: 120px;
+      transform: translateX(-50%);
+      background: radial-gradient(closest-side, rgba(234, 88, 12, 0.16), transparent);
+      filter: blur(24px);
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    /* 卡片：鼠标聚光 + 精细描边 */
+    .stat-card, .price-card, .review-card, .platform-tile, .founder-card { position: relative; overflow: hidden; }
+    .stat-card::before, .price-card::before, .review-card::before, .platform-tile::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: radial-gradient(280px circle at var(--mx, 50%) var(--my, -30%), rgba(234, 88, 12, 0.10), transparent 62%);
+      opacity: 0;
+      transition: opacity 280ms ease;
+    }
+    .stat-card:hover::before, .price-card:hover::before, .review-card:hover::before, .platform-tile:hover::before { opacity: 1; }
+    .stat-card { background: linear-gradient(180deg, #ffffff, #fbfcfd); box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04), 0 12px 30px -22px rgba(15, 23, 42, 0.18); }
+    .stat-card::after { content: ""; position: absolute; left: 18%; right: 18%; top: 0; height: 1px; background: linear-gradient(90deg, transparent, rgba(234, 88, 12, 0.55), transparent); }
+    .stat-num span { background: linear-gradient(180deg, #fb7a24, #c2410c); -webkit-background-clip: text; background-clip: text; color: transparent; }
+
+    /* 推荐套餐：流动渐变描边 */
+    .price-card.is-popular {
+      border-color: transparent;
+      background: linear-gradient(#ffffff, #ffffff) padding-box, conic-gradient(from var(--ang), #f97316, #fdba74, #34d399, #60a5fa, #f97316) border-box;
+      animation: spinBorder 5s linear infinite;
+    }
+    @keyframes spinBorder { to { --ang: 360deg; } }
+
+    /* 区块标题：微渐变 */
+    .section-head h2, .feature-copy h2 { background: linear-gradient(180deg, #0f172a 35%, #3b4a61 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .feature-copy h2 .hl { -webkit-text-fill-color: var(--accent); }
+
+    /* 底部 CTA：网格 + 光晕 */
+    .final-cta-box { position: relative; overflow: hidden; isolation: isolate; }
+    .final-cta-box::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      background-image: linear-gradient(rgba(15, 23, 42, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(15, 23, 42, 0.05) 1px, transparent 1px);
+      background-size: 36px 36px;
+      -webkit-mask-image: radial-gradient(ellipse 60% 80% at 50% 0%, #000, transparent 75%);
+      mask-image: radial-gradient(ellipse 60% 80% at 50% 0%, #000, transparent 75%);
+    }
+
+    /* 定价轮播指示点（移动端显示） */
+    .pricing-dots { display: none; justify-content: center; gap: 6px; margin-top: 4px; }
+    .pricing-dots i { width: 6px; height: 6px; border-radius: 3px; background: #cbd5e1; transition: width 260ms var(--ease), background 260ms ease; }
+    .pricing-dots i.is-on { width: 20px; background: var(--accent); }
+
     @media (max-width: 980px) {
       .nav-menu { display: none; }
-      .feature-row, .pricing-grid, .stats-grid, .footer-grid { grid-template-columns: 1fr; }
+      .feature-row, .stats-grid { grid-template-columns: 1fr; }
+      .pricing-grid {
+        display: flex;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        gap: 14px;
+        margin: 0 -24px;
+        padding: 8px 24px 16px;
+        scroll-padding: 0 24px;
+      }
+      .pricing-grid::-webkit-scrollbar { display: none; }
+      .price-card { flex: 0 0 min(360px, 84%); scroll-snap-align: center; }
+      .price-card:hover { transform: none; }
+      .pricing-dots { display: flex; }
+      .footer-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 26px 16px; }
+      .footer-grid > div:first-child { grid-column: 1 / -1; }
       .feature-row.is-reverse .feature-copy, .feature-row.is-reverse .feature-visual { order: initial; }
       .reviews-masonry { columns: 1; }
       .platforms-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -1373,7 +1548,7 @@
       .billing-toggle-wrap { margin-bottom: 24px; }
       .billing-toggle { max-width: 100%; }
       .billing-btn { height: 36px; padding: 0 14px; font-size: 13px; gap: 5px; }
-      .pricing-grid { gap: 16px; }
+      .pricing-grid { gap: 12px; margin: 0 -16px; padding: 8px 16px 14px; scroll-padding: 0 16px; }
       .price-card { padding: 24px 18px; border-radius: 18px; gap: 18px; }
       .price-val { font-size: 38px; }
       .estimator-bar { padding: 16px; gap: 12px; justify-content: center; text-align: center; }
@@ -1384,11 +1559,15 @@
 
       .final-cta-section { padding: 8px 0 48px; }
       .final-cta-box { padding: 40px 18px; border-radius: 20px; }
-      .final-cta-box h2 { font-size: 25px; white-space: normal; }
+      .final-cta-box h2 { font-size: 22px; white-space: nowrap; }
       .final-cta-box p { font-size: 14.5px; margin-bottom: 22px; }
 
       .site-footer { padding: 38px 0 32px; font-size: 13.5px; }
-      .footer-grid { gap: 24px; }
+      .footer-grid { gap: 22px 10px; }
+      .footer-col h4 { font-size: 11px; margin-bottom: 10px; letter-spacing: 0.06em; }
+      .footer-col ul { gap: 8px; }
+      .footer-col a { font-size: 12.5px; line-height: 1.4; }
+      .site-footer .brand + p { font-size: 13px; max-width: none !important; }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -2677,6 +2856,7 @@
             <a class="btn btn-primary" style="width:100%;" href="/#/membership">开始免费试用 →</a>
           </article>
         </div>
+        <div class="pricing-dots" id="pricingDots" aria-hidden="true"><i></i><i></i><i class="is-on"></i></div>
 
         <div class="estimator-bar" data-reveal>
           <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;">
@@ -2759,14 +2939,14 @@
           <li><a href="#feat-discover">超爆选题雷达</a></li>
           <li><a href="#feat-breakdown">超棒视频拆解</a></li>
           <li><a href="#feat-rewrite">短视频 AI 改写</a></li>
-          <li><a href="#feat-wechat">公众号全流程一键发布</a></li>
+          <li><a href="#feat-wechat">公众号一键发布</a></li>
         </ul>
       </div>
       <div class="footer-col">
         <h4>快速入口</h4>
         <ul>
           <li><a href="/#/materials/xiaohongshu">进入工作台</a></li>
-          <li><a href="/#/membership">会员权益与定价</a></li>
+          <li><a href="/#/membership">会员定价</a></li>
           <li><a href="/#/login">账号登录</a></li>
           <li><a href="/#/register">免费试用</a></li>
         </ul>
@@ -2774,9 +2954,9 @@
       <div class="footer-col">
         <h4>文档与社区</h4>
         <ul>
-          <li><a href="/wechat-setup-guide">公众号接入教程</a></li>
-          <li><a href="/docs">使用帮助中心</a></li>
-          <li><a href="https://x.com/laowangbabababa" target="_blank" rel="noopener noreferrer">进入老王的推特主页 ↗</a></li>
+          <li><a href="/wechat-setup-guide">公众号接入</a></li>
+          <li><a href="/docs">帮助中心</a></li>
+          <li><a href="https://x.com/laowangbabababa" target="_blank" rel="noopener noreferrer">老王的推特 ↗</a></li>
           <li><a href="/privacy.html">隐私政策</a></li>
         </ul>
       </div>
@@ -2878,7 +3058,8 @@
       const toastEl = document.getElementById('simToast');
       const crumbEl = document.getElementById('wbCrumb');
       const playToggle = document.getElementById('cinemaPlayToggle');
-      const DUR = [4000, 3400, 3600, 3800, 6600, 5400];
+      const SPEED = 0.68;
+      const DUR = [4000, 3400, 3600, 3800, 6600, 5400].map((d) => Math.round(d * SPEED));
       const CRUMBS = [
         '视频矩阵发布 · 发布设置',
         '数据总览 · 全渠道汇总',
@@ -2893,7 +3074,7 @@
       let timers = [];
 
       const clearTimers = () => { timers.forEach(clearTimeout); timers = []; };
-      const later = (fn, ms) => { const id = setTimeout(fn, ms); timers.push(id); };
+      const later = (fn, ms) => { const id = setTimeout(fn, ms * SPEED); timers.push(id); };
       const showToast = (msg) => { if (toastEl) { toastEl.textContent = msg; toastEl.classList.add('is-show'); } };
       const hideToast = () => toastEl?.classList.remove('is-show');
 
@@ -3490,9 +3671,36 @@
         });
       });
 
+      // 13. 定价：移动端横向轮播（默认居中年度会员）+ 指示点
+      const pricingGrid = document.querySelector('.pricing-grid');
+      const pricingDots = [...document.querySelectorAll('#pricingDots i')];
+      if (pricingGrid && pricingDots.length) {
+        const cards = [...pricingGrid.querySelectorAll('.price-card')];
+        const centerOf = (c) => c.offsetLeft - (pricingGrid.clientWidth - c.offsetWidth) / 2;
+        const syncDots = () => {
+          let best = 0; let bestD = Infinity;
+          cards.forEach((c, k) => { const d = Math.abs(centerOf(c) - pricingGrid.scrollLeft); if (d < bestD) { bestD = d; best = k; } });
+          pricingDots.forEach((d, k) => d.classList.toggle('is-on', k === best));
+        };
+        if (pricingGrid.scrollWidth > pricingGrid.clientWidth + 4) {
+          pricingGrid.scrollLeft = Math.max(0, centerOf(cards[cards.length - 1]));
+        }
+        pricingGrid.addEventListener('scroll', () => requestAnimationFrame(syncDots), { passive: true });
+        syncDots();
+      }
+
+      // 14. 卡片鼠标聚光
+      document.querySelectorAll('.stat-card, .price-card, .review-card, .platform-tile').forEach((card) => {
+        card.addEventListener('pointermove', (e) => {
+          const r = card.getBoundingClientRect();
+          card.style.setProperty('--mx', `${e.clientX - r.left}px`);
+          card.style.setProperty('--my', `${e.clientY - r.top}px`);
+        });
+      });
+
       // 12. 静态预览托管（如 GitHub Pages）下自动将站内登录/注册链接指向正式站点
       if (location.hostname.endsWith('github.io')) {
-        document.querySelectorAll('a[href^="/#/"], a[href="/"]').forEach((a) => {
+        document.querySelectorAll('a[href^="/"]:not([href^="//"])').forEach((a) => {
           const h = a.getAttribute('href');
           a.setAttribute('href', `https://laowangba.com${h}`);
           a.setAttribute('target', '_blank');
